@@ -3,7 +3,7 @@ services:
     build: .
     container_name: nour_apache
     ports:
-      - "8080:80" 
+      - "8080:80"  # web server - change via GUI Settings
     volumes:
       - ./www:/var/www/html 
       - ./config/php/php.ini:/usr/local/etc/php/php.ini:ro
@@ -36,7 +36,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: nour_pma
     ports:
-      - "8081:80" 
+      - "8081:80"  # pma - change via GUI Settings
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: 041201

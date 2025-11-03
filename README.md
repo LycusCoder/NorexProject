@@ -1,230 +1,205 @@
 # 🚀 NourProject
 
-**Sistem Development PHP yang lebih powerful dari Laragon & XAMPP!**
+**Modern PHP development environment with Native Desktop GUI**  
+*Powerful like Laragon, Cross-platform like Docker!*
 
-## 🌟 Fitur Utama
+---
 
-- ✅ **Multi-version PHP Support** (8.1, 8.2, 8.3)
-- ✅ **Easy Version Switching** (seperti Laragon)
-- ✅ **All Essential PHP Extensions** (mysqli, pdo, gd, zip, intl, opcache, dll)
-- ✅ **MySQL 8.0** dengan phpMyAdmin
-- ✅ **Docker-based** (cross-platform: Linux, macOS, Windows)
-- ✅ **Auto-restart** untuk development yang smooth
-- ✅ **Complete Tooling** (backup, logs, status monitoring)
+## ✨ What is NourProject?
 
-## 📦 Tech Stack
+Complete PHP development stack featuring:
+- 🖥️ **Native Desktop GUI** - Laragon-style control panel  
+- 🐳 **Docker-based** - Isolated, reproducible environments
+- 🔄 **Multi-PHP Support** - 8.1, 8.2, 8.3 with easy switching
+- ⚙️ **Flexible Configuration** - Ports, database via GUI
+- 🌐 **Complete Stack** - Apache, MySQL 8.0, phpMyAdmin
+- 📦 **All PHP Extensions** - mysqli, pdo, gd, zip, intl, opcache, etc.
 
-- **Web Server**: Apache 2.4
-- **PHP**: 8.2 (switchable ke 8.1 atau 8.3)
-- **Database**: MySQL 8.0
-- **Admin Tool**: phpMyAdmin
-- **Container**: Docker & Docker Compose
+---
 
 ## 🚀 Quick Start
 
-### 1. Start Services
+### GUI Desktop (Recommended)
+```bash
+cd /app/gui && bash run.sh
+```
+**One-click control for everything!**
+
+### Command Line
 ```bash
 bash scripts/start.sh
+open http://localhost:8080
 ```
+**That's it!** You're ready to develop.
 
-### 2. Access Points
-- **Main Site**: http://localhost:8080
-- **Database Test**: http://localhost:8080/db_test.php
-- **phpMyAdmin**: http://localhost:8081
-  - Username: `root`
-  - Password: `041201`
+---
 
-### 3. Stop Services
-```bash
-bash scripts/stop.sh
-```
+## 📚 Documentation
 
-## 🔧 Command Reference
+**All documentation organized in [`docs/`](docs/) folder**
 
-### Service Management
-```bash
-# Start all services
-bash scripts/start.sh
+👉 **[Complete Documentation Index](docs/README.md)**
 
-# Stop all services
-bash scripts/stop.sh
+### Essential Guides
+- 📖 [Quick Start](docs/user/QUICK_START.md) - 5-minute setup
+- 💻 [Installation Guide](docs/user/INSTALLATION.md) - Detailed setup  
+- 🖥️ [GUI Installation](docs/user/GUI_INSTALLATION.md) - Desktop app
+- 📝 [Quick Reference](docs/user/QUICK_REFERENCE.md) - Command cheat sheet
+- 🏗️ [Architecture](docs/technical/ARCHITECTURE.md) - System design
+- 📋 [Changelog](docs/technical/CHANGELOG.md) - Version history
 
-# Check status
-bash scripts/status.sh
+---
 
-# View logs
-bash scripts/logs.sh [web|db|pma|all]
-```
+## 🌟 Key Features
 
-### PHP Version Switching (Laragon Style!)
-```bash
-# Switch to PHP 8.1
-bash scripts/switch-php.sh 8.1
+| Feature | Description |
+|---------|-------------|
+| 🖥️ **Native GUI** | PySide6 desktop app with real-time monitoring |
+| ⚡ **Service Control** | Start/Stop services with one click |
+| 🔄 **PHP Switching** | Change versions (8.1/8.2/8.3) instantly |
+| 🌐 **Port Config** | Easy port management (80/8080/custom) |
+| ⚙️ **Settings Panel** | Configure via GUI (no manual edits) |
+| 📊 **Live Logs** | Real-time output monitoring |
+| 🚀 **Quick Access** | Browser links for instant access |
+| 🔄 **Auto-Refresh** | Status updates every 5 seconds |
 
-# Switch to PHP 8.3
-bash scripts/switch-php.sh 8.3
+---
 
-# List available versions
-bash scripts/switch-php.sh
-```
+## 🎯 Access Points
 
-### Database Management
-```bash
-# Backup database
-bash scripts/backup-db.sh
+| Service | URL | Default Credentials |
+|---------|-----|---------------------|
+| **Main Site** | http://localhost:8080 | - |
+| **phpMyAdmin** | http://localhost:8081 | root / 041201 |
+| **MySQL** | localhost:3306 | root / 041201 |
 
-# Backups saved to: ./backups/
-```
+*All configurable via GUI Settings ⚙️*
 
-### Advanced
-```bash
-# Complete reset (WARNING: deletes all data!)
-bash scripts/reset.sh
-```
+---
 
-## 📁 Project Structure
+## 📦 What's Included
+
+### Core Stack
+- **Apache 2.4** - Web server
+- **PHP 8.2** - Switchable: 8.1, 8.2, 8.3  
+- **MySQL 8.0** - Database
+- **phpMyAdmin** - Admin tool
+- **PySide6** - Qt6 desktop GUI
+
+### PHP Extensions
+Database • Image (gd) • Compression (zip) • Intl • Opcache  
+PDO • MySQLi • MBString • BCMath • Exif • SOAP • cURL
+
+---
+
+## 🏗️ Project Structure
 
 ```
 NourProject/
-├── www/                  # Your PHP files here
-│   ├── index.php
-│   └── db_test.php
-├── config/
-│   └── php/
-│       └── php.ini       # PHP configuration
-├── data/
-│   └── mysql/            # MySQL data (persistent)
-├── backups/              # Database backups
-├── scripts/              # Management scripts
-│   ├── start.sh
-│   ├── stop.sh
-│   ├── status.sh
-│   ├── switch-php.sh
-│   ├── logs.sh
-│   ├── backup-db.sh
-│   └── reset.sh
-├── Dockerfile
+├── gui/           # Desktop GUI application  
+├── www/           # Your PHP files  
+├── scripts/       # Management scripts
+├── config/        # Configuration
+├── docs/          # 📚 All documentation
+├── data/          # MySQL data (persistent)
 └── docker-compose.yml
 ```
 
-## 📚 PHP Extensions Included
+---
 
-- **Database**: mysqli, pdo, pdo_mysql
-- **Image**: gd (with freetype & jpeg)
-- **Compression**: zip
-- **Internationalization**: intl, mbstring
-- **Performance**: opcache
-- **Others**: bcmath, exif, pcntl, soap, curl, json
+## 💡 Common Tasks
 
-## 🔌 Database Connection
-
-### Using MySQLi
-```php
-<?php
-$conn = new mysqli('db', 'root', '041201', 'nour_db');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-$conn->close();
-?>
-```
-
-### Using PDO
-```php
-<?php
-try {
-    $pdo = new PDO('mysql:host=db;dbname=nour_db', 'root', '041201');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-}
-?>
-```
-
-## ⚙️ Configuration
-
-### Change PHP Settings
-Edit `config/php/php.ini` and restart:
+**Start Development**
 ```bash
-bash scripts/stop.sh
-bash scripts/start.sh
+cd /app/gui && bash run.sh
 ```
 
-### Change MySQL Password
-1. Edit `docker-compose.yml`
-2. Update both `MYSQL_ROOT_PASSWORD` values
-3. Reset and restart:
+**Change to Port 80**
+- GUI: Settings ⚙️ → Ports → "Use Port 80"
+- CLI: `bash scripts/change-port.sh 80`
+
+**Switch PHP Version**
+- GUI: Dropdown → Select → "Switch & Rebuild"
+- CLI: `bash scripts/switch-php.sh 8.3`
+
+**Backup Database**
 ```bash
-bash scripts/reset.sh
-bash scripts/start.sh
+bash scripts/backup-db.sh
 ```
 
-## 🎯 Keunggulan vs Laragon/XAMPP
+---
 
-| Feature | NourProject | Laragon | XAMPP |
-|---------|-------------|---------|-------|
-| Cross-platform | ✅ | ❌ (Windows only) | ✅ |
-| Version Switching | ✅ | ✅ | ❌ |
-| Isolated Environment | ✅ | ❌ | ❌ |
-| Easy Backup | ✅ | ❌ | ❌ |
-| All Extensions | ✅ | ✅ | ⚠️ |
-| Modern Stack | ✅ | ✅ | ⚠️ |
-| Git-friendly | ✅ | ⚠️ | ⚠️ |
+## 🆚 Why NourProject?
 
-## 🐛 Troubleshooting
+### vs Laragon
+✅ Cross-platform • ✅ Docker isolation • ✅ Real-time GUI monitoring
 
-### Port Already in Use
+### vs XAMPP
+✅ Modern GUI • ✅ PHP switching • ✅ Better dev experience
+
+### vs Manual Docker
+✅ Pre-configured • ✅ GUI management • ✅ Complete docs
+
+---
+
+## 🔧 Requirements
+
+- Docker (latest)
+- Python 3.8+ (GUI only)
+- 2GB RAM minimum
+
+*No PHP, MySQL, or Apache installation needed on host!*
+
+---
+
+## 🎓 Learning Path
+
+1. New User → [Quick Start](docs/user/QUICK_START.md)
+2. Installing → [Installation Guide](docs/user/INSTALLATION.md)
+3. Need Commands → [Quick Reference](docs/user/QUICK_REFERENCE.md)
+4. Understanding System → [Architecture](docs/technical/ARCHITECTURE.md)
+5. Troubleshooting → Check doc's troubleshooting sections
+
+---
+
+## 📝 Version
+
+**Current**: v2.0.0 (Phase 2 Complete)
+- Native Desktop GUI
+- Settings management
+- Port 80 support
+- Modern UX
+
+[See full changelog](docs/technical/CHANGELOG.md)
+
+---
+
+## 🔐 Security Note
+
+⚠️ **Default credentials for development only!**
+- Change passwords for production
+- Don't expose ports publicly
+
+---
+
+## 🤝 Get Help
+
+- 📖 [Documentation](docs/README.md)
+- 🐛 Bug? Check logs first
+- 💡 Feature request? See [roadmap](docs/technical/CHANGELOG.md)
+
+---
+
+## 🎉 Get Started!
+
 ```bash
-# Check what's using the ports
-sudo lsof -i :8080
-sudo lsof -i :8081
-sudo lsof -i :3306
-
-# Kill the process or change ports in docker-compose.yml
+cd /app/gui && bash run.sh
 ```
 
-### Container Won't Start
-```bash
-# Check logs
-bash scripts/logs.sh all
+**Happy Coding!** 🚀
 
-# Try rebuilding
-docker compose down
-docker compose build --no-cache
-docker compose up -d
-```
+---
 
-### Database Connection Error
-1. Check if MySQL container is running: `docker compose ps`
-2. Verify password in docker-compose.yml
-3. Wait 10 seconds after starting for MySQL to initialize
+*NourProject - Making PHP development powerful, modern, and enjoyable!*
 
-## 📝 Development Tips
-
-1. **Place your PHP files in `www/` folder**
-2. **Changes are reflected immediately** (hot reload enabled)
-3. **Use `db` as database host** (not `localhost` or `127.0.0.1`)
-4. **Backup regularly** with `bash scripts/backup-db.sh`
-5. **Check status** with `bash scripts/status.sh`
-
-## 🔐 Security Notes
-
-- Default password `041201` is for **development only**
-- Change passwords for production use
-- Don't expose ports to public networks
-- Keep Docker updated
-
-## 💬 Support
-
-For issues or questions:
-1. Check logs: `bash scripts/logs.sh all`
-2. Check status: `bash scripts/status.sh`
-3. Try reset: `bash scripts/reset.sh`
-
-## 🎉 Enjoy!
-
-NourProject - Development environment yang powerful, modern, dan mudah digunakan!
-
-**Happy Coding! 🚀**
+**Phase 2.5** ✨ *Clean Architecture*
