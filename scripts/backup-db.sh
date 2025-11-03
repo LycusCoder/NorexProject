@@ -1,0 +1,32 @@
+#!/bin/bash
+# NourProject - Database Backup Script
+# Usage: bash scripts/backup-db.sh
+
+BACKUP_DIR="./backups"
+DATE=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="$BACKUP_DIR/nour_db_$DATE.sql"
+
+echo ""
+echo "═══════════════════════════════════════════════════════════"
+echo "  💾 NourProject - Database Backup"
+echo "═══════════════════════════════════════════════════════════"
+echo ""
+
+# Create backup directory if not exists
+mkdir -p "$BACKUP_DIR"
+
+echo "🔄 Creating backup..."
+docker exec nour_mysql mysqldump -u root -p041201 nour_db > "$BACKUP_FILE"
+
+if [ $? -eq 0 ]; then
+    echo "✅ Backup created: $BACKUP_FILE"
+    echo "   Size: $(du -h "$BACKUP_FILE" | cut -f1)"
+else
+    echo "❌ Backup failed!"
+    exit 1
+fi
+
+echo ""
+echo "📊 Recent backups:"
+ls -lh "$BACKUP_DIR" | tail -5
+echo ""

@@ -1,42 +1,53 @@
 services:
   web:
-    image: php:8.2-apache 
+    build: .
     container_name: nour_apache
     ports:
       - "8080:80" 
     volumes:
       - ./www:/var/www/html 
-      - ./config/php/php.ini:/usr/local/etc/php/php.ini:ro # Konfigurasi PHP
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini:ro
     environment:
       - DATABASE_HOST=db
       - DATABASE_NAME=nour_db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=041201
     depends_on:
       - db
     restart: unless-stopped
+    networks:
+      - nour_network
 
   db:
-    image: mysql:8.0 # Ganti ke mysql:8.4 untuk ganti versi!
+    image: mysql:8.0
     container_name: nour_mysql
     ports:
-      - "3306:3306" # Pastikan port ini bebas di host!
+      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 041201 # GANTI INI!
+      MYSQL_ROOT_PASSWORD: 041201
       MYSQL_DATABASE: nour_db
     volumes:
-      - ./data/mysql:/var/lib/mysql # Data persisten
+      - ./data/mysql:/var/lib/mysql
     restart: unless-stopped
+    networks:
+      - nour_network
     
-  pma: # phpMyAdmin - Service untuk folder tools/ di blueprint-mu
+  pma:
     image: phpmyadmin/phpmyadmin
     container_name: nour_pma
-    # Gunakan port 8081 di host agar tidak bentrok dengan Apache
     ports:
       - "8081:80" 
     environment:
-      PMA_HOST: db # Hostname mengarah ke container db
-      MYSQL_ROOT_PASSWORD: root_password_super_aman # GANTI INI!
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: 041201
       UPLOAD_LIMIT: 64M
+      PMA_ARBITRARY: 1
     depends_on:
       - db
     restart: unless-stopped
+    networks:
+      - nour_network
 
+networks:
+  nour_network:
+    driver: bridge
