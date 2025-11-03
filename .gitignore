@@ -1,0 +1,13 @@
+# DATA FOLDER: Harusnya tidak pernah di-commit!
+data/
+logs/
+.env
+
+# PHP / Composer
+vendor/
+
+# Docker Files
+*.orig
+
+# Keys 
+keys/
