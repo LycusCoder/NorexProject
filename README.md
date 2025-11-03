@@ -19,18 +19,28 @@ Complete PHP development stack featuring:
 
 ## 🚀 Quick Start
 
-### GUI Desktop (Recommended)
+### First Time Setup
 ```bash
-cd /app/gui && bash run.sh
+bash nour.sh setup
 ```
-**One-click control for everything!**
 
-### Command Line
+### Start & Launch
 ```bash
-bash scripts/start.sh
-open http://localhost:8080
+# Start services
+bash nour.sh start
+
+# Launch GUI (recommended)
+bash nour.sh gui
 ```
+
+### Or use any command
+```bash
+bash nour.sh help    # See all commands
+```
+
 **That's it!** You're ready to develop.
+
+> 💡 **Tip:** Use `bash nour.sh` for all operations - one command for everything!
 
 ---
 
@@ -109,22 +119,27 @@ NourProject/
 
 ## 💡 Common Tasks
 
-**Start Development**
+**First Time Setup**
 ```bash
-cd /app/gui && bash run.sh
+bash nour.sh setup
 ```
 
-**Change to Port 80**
-- GUI: Settings ⚙️ → Ports → "Use Port 80"
-- CLI: `bash scripts/change-port.sh 80`
-
-**Switch PHP Version**
-- GUI: Dropdown → Select → "Switch & Rebuild"
-- CLI: `bash scripts/switch-php.sh 8.3`
-
-**Backup Database**
+**Start Development**
 ```bash
-bash scripts/backup-db.sh
+bash nour.sh start && bash nour.sh gui
+```
+
+**Quick Actions**
+```bash
+bash nour.sh python              # Python CLI
+bash nour.sh php 8.3             # Switch PHP version
+bash nour.sh db-backup           # Backup database
+bash nour.sh verify              # Health check
+```
+
+**All Commands**
+```bash
+bash nour.sh help                # Full command list
 ```
 
 ---
@@ -164,11 +179,12 @@ bash scripts/backup-db.sh
 
 ## 📝 Version
 
-**Current**: v2.0.0 (Phase 2 Complete)
-- Native Desktop GUI
-- Settings management
-- Port 80 support
-- Modern UX
+**Current**: v3.0.0 (Phase 3 Complete)
+- Context menu quick actions
+- Python CLI integration
+- Modern refined UI/UX
+- System tray support
+- Enhanced developer tools
 
 [See full changelog](docs/technical/CHANGELOG.md)
 
@@ -202,4 +218,4 @@ cd /app/gui && bash run.sh
 
 *NourProject - Making PHP development powerful, modern, and enjoyable!*
 
-**Phase 2.5** ✨ *Clean Architecture*
+**Phase 3** ✨ *Refined & Production Ready*

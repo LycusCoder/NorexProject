@@ -24,7 +24,9 @@ Comprehensive documentation for NourProject - Modern PHP development environment
 - **[Changelog](technical/CHANGELOG.md)** - Version history and release notes
 
 ### Development Guides
+- **[Golden Rules](guides/GOLDEN_RULES.md)** - ⭐ Project standards & best practices
 - **[Phase 2 Complete Summary](guides/PHASE_2_COMPLETE.md)** - Phase 2 achievements and features
+- **[Phase 3 Complete Summary](guides/PHASE_3_COMPLETE.md)** - Phase 3 refinement and tools
 
 ---
 
@@ -54,7 +56,9 @@ docs/
 │   └── CHANGELOG.md
 │
 ├── guides/           # Development guides
-│   └── PHASE_2_COMPLETE.md
+│   ├── GOLDEN_RULES.md        # ⭐ Project standards
+│   ├── PHASE_2_COMPLETE.md
+│   └── PHASE_3_COMPLETE.md
 │
 └── meta/             # Project metadata
     ├── GIT_READY.md
@@ -199,4 +203,4 @@ Our documentation aims to:
 
 **NourProject** - Powerful PHP development with excellent documentation! 🚀
 
-*Last updated: Phase 2.5 - Clean Architecture*
+*Last updated: Phase 3 - Refined & Production Ready*
