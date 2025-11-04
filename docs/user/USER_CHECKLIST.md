@@ -1,4 +1,4 @@
-# ✅ NourProject Phase 2 - User Checklist
+# ✅ NorexProject Phase 2 - User Checklist
 
 ## 🎯 Getting Started with GUI
 
@@ -82,7 +82,7 @@ bash run.sh
 - [ ] "Use Port 8080" button works
 
 #### Database Tab
-- [ ] Database name shows: nour_db
+- [ ] Database name shows: norex_db
 - [ ] Username shows: root
 - [ ] Password shows: 041201 (hidden)
 - [ ] "Show Password" checkbox works
@@ -170,7 +170,7 @@ bash run.sh
 ### Status Not Updating
 - [ ] Docker is running: `docker info`
 - [ ] Containers exist: `docker ps -a`
-- [ ] Container names match: nour_apache, nour_mysql, nour_pma
+- [ ] Container names match: norex_apache, norex_mysql, norex_pma
 - [ ] No errors in log panel
 
 ### Services Won't Start
@@ -272,7 +272,7 @@ Please report:
 
 If all items are checked, congratulations! 🎊
 
-NourProject Phase 2 is fully functional and ready for daily use!
+NorexProject Phase 2 is fully functional and ready for daily use!
 
 **Enjoy your powerful PHP development environment!** 🚀
 
@@ -290,4 +290,4 @@ Need help? Check:
 ---
 
 *Last updated: Phase 2 completion*
-*NourProject - Development made easy!*
+*NorexProject - Development made easy!*

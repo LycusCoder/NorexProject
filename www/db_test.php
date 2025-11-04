@@ -1,6 +1,6 @@
 <?php
 /**
- * NourProject Database Connection Test
+ * NorexProject Database Connection Test
  * Verifikasi koneksi MySQL dan ekstensi PHP
  */
 
@@ -11,7 +11,7 @@ header('Content-Type: text/html; charset=utf-8');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NourProject - Database Test</title>
+    <title>NorexProject - Database Test</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -67,7 +67,7 @@ header('Content-Type: text/html; charset=utf-8');
 </head>
 <body>
     <div class="container">
-        <h1>🚀 NourProject Test Suite</h1>
+        <h1>🚀 NorexProject Test Suite</h1>
         
         <?php
         // Test 1: PHP Version
@@ -96,7 +96,7 @@ header('Content-Type: text/html; charset=utf-8');
         
         // Test 4: Database Connection
         $db_host = getenv('DATABASE_HOST') ?: 'db';
-        $db_name = getenv('DATABASE_NAME') ?: 'nour_db';
+        $db_name = getenv('DATABASE_NAME') ?: 'norex_db';
         $db_user = getenv('DATABASE_USER') ?: 'root';
         $db_pass = getenv('DATABASE_PASSWORD') ?: '041201';
         
@@ -139,7 +139,7 @@ header('Content-Type: text/html; charset=utf-8');
         ?>
         
         <div class="test-item success">
-            <div class="status success">🎉 NourProject Ready!</div>
+            <div class="status success">🎉 NorexProject Ready!</div>
             <div class="info">Sistem lebih powerful dari Laragon & XAMPP!</div>
             <div class="info" style="margin-top: 15px;">
                 <strong>Quick Links:</strong><br>

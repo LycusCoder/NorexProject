@@ -16,7 +16,7 @@
 ## 🚀 Try Again
 
 ```bash
-bash nour.sh gui
+bash norex.sh gui
 ```
 
 Should work now! ✅
@@ -33,7 +33,7 @@ pip3 install PySide6
 
 ### Option 2: Run Setup Again
 ```bash
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 ### Option 3: Manual Install
@@ -86,11 +86,11 @@ If you encounter PySide6 issues in future:
 pip3 install --upgrade PySide6
 
 # Or run setup
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 ---
 
 **Fix Status:** ✅ APPLIED  
 **Ready to Test:** YES  
-**Command:** `bash nour.sh gui`
+**Command:** `bash norex.sh gui`

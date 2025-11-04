@@ -87,8 +87,8 @@ def toggle_logs(self):
 def show_about(self):
     QMessageBox.about(
         self,
-        "About NourProject",
-        "NourProject v3.0.0\n"
+        "About NorexProject",
+        "NorexProject v3.0.0\n"
         "Phase 3: Refinement\n\n"
         "Modern PHP Development Environment"
     )
@@ -140,7 +140,7 @@ def show_context_menu(self, position):
 **Target State:**
 ```
 ┌─────────────────────────────────────┐
-│ ⚙️  🚀 NourProject Desktop          │
+│ ⚙️  🚀 NorexProject Desktop          │
 │                                     │
 │ 💡 Right-click for quick actions   │
 │                                     │

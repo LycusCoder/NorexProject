@@ -1,6 +1,6 @@
-# 🚀 Getting Started with NourProject
+# 🚀 Getting Started with NorexProject
 
-**Quick start guide untuk memulai NourProject dari awal sampai running!**
+**Quick start guide untuk memulai NorexProject dari awal sampai running!**
 
 ---
 
@@ -18,7 +18,7 @@ Pastikan sudah terinstall:
 
 ```bash
 cd /app
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 **Apa yang dilakukan:**
@@ -35,7 +35,7 @@ bash nour.sh setup
 ### Step 2: Start Services
 
 ```bash
-bash nour.sh start
+bash norex.sh start
 ```
 
 **Apa yang dilakukan:**
@@ -51,12 +51,12 @@ bash nour.sh start
 
 **Option A: GUI Desktop (Recommended)**
 ```bash
-bash nour.sh gui
+bash norex.sh gui
 ```
 
 **Option B: Browser**
 ```bash
-bash nour.sh open
+bash norex.sh open
 ```
 
 **Selesai!** 🎉
@@ -65,7 +65,7 @@ bash nour.sh open
 
 ## 🎨 Using GUI (Desktop)
 
-Setelah `bash nour.sh gui`:
+Setelah `bash norex.sh gui`:
 
 1. **Window muncul** dengan status indicators
 2. **Right-click di mana saja** untuk context menu:
@@ -94,38 +94,38 @@ Setelah `bash nour.sh gui`:
 Lihat semua command yang tersedia:
 
 ```bash
-bash nour.sh help
+bash norex.sh help
 ```
 
 **Quick Commands:**
 
 ```bash
 # Service Management
-bash nour.sh start          # Start services
-bash nour.sh stop           # Stop services
-bash nour.sh restart        # Restart services
-bash nour.sh status         # Check status
+bash norex.sh start          # Start services
+bash norex.sh stop           # Stop services
+bash norex.sh restart        # Restart services
+bash norex.sh status         # Check status
 
 # GUI
-bash nour.sh gui            # Launch GUI
+bash norex.sh gui            # Launch GUI
 
 # PHP Management
-bash nour.sh php 8.3        # Switch to PHP 8.3
-bash nour.sh php-info       # Show PHP version
+bash norex.sh php 8.3        # Switch to PHP 8.3
+bash norex.sh php-info       # Show PHP version
 
 # Python CLI
-bash nour.sh python         # Interactive Python shell
-bash nour.sh python 'code'  # Execute Python code
+bash norex.sh python         # Interactive Python shell
+bash norex.sh python 'code'  # Execute Python code
 
 # Database
-bash nour.sh db-backup      # Backup database
-bash nour.sh db-shell       # MySQL shell
+bash norex.sh db-backup      # Backup database
+bash norex.sh db-shell       # MySQL shell
 
 # Utilities
-bash nour.sh verify         # Health check
-bash nour.sh open           # Open main site
-bash nour.sh pma            # Open phpMyAdmin
-bash nour.sh info           # System info
+bash norex.sh verify         # Health check
+bash norex.sh open           # Open main site
+bash norex.sh pma            # Open phpMyAdmin
+bash norex.sh info           # System info
 ```
 
 ---
@@ -144,13 +144,13 @@ sudo systemctl start docker
 ### Services Not Starting
 ```bash
 # Check what's wrong
-bash nour.sh status
+bash norex.sh status
 
 # View logs
-bash nour.sh logs
+bash norex.sh logs
 
 # Restart everything
-bash nour.sh restart
+bash norex.sh restart
 ```
 
 ### GUI Not Working
@@ -159,13 +159,13 @@ bash nour.sh restart
 pip3 install PySide6 psutil
 
 # Or run setup again
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 ### Port Already in Use
 ```bash
 # Launch GUI and change port via Settings ⚙️
-bash nour.sh gui
+bash norex.sh gui
 # Click ⚙️ → Ports → Change port → Save
 # Restart services
 ```
@@ -176,19 +176,19 @@ bash nour.sh gui
 
 **Morning:**
 ```bash
-bash nour.sh start          # Start services
-bash nour.sh gui            # Launch GUI (optional)
+bash norex.sh start          # Start services
+bash norex.sh gui            # Launch GUI (optional)
 ```
 
 **Development:**
 - Edit files in `/app/www/`
 - Changes reflect immediately (hot reload)
 - Use GUI for service control
-- Use `bash nour.sh python` for Python scripts
+- Use `bash norex.sh python` for Python scripts
 
 **Evening:**
 ```bash
-bash nour.sh stop           # Stop services (optional)
+bash norex.sh stop           # Stop services (optional)
 # Or just close - services keep running
 ```
 
@@ -205,17 +205,17 @@ Right-click di GUI untuk quick access ke semua fungsi.
 ### 3. Python CLI for Automation
 ```bash
 # Quick scripts
-bash nour.sh python 'import requests; print(requests.get("http://localhost:8080").text)'
+bash norex.sh python 'import requests; print(requests.get("http://localhost:8080").text)'
 
 # Or create script files
-echo 'print("Hello NourProject!")' > test.py
-bash nour.sh python test.py
+echo 'print("Hello NorexProject!")' > test.py
+bash norex.sh python test.py
 ```
 
 ### 4. Database Backup Berkala
 ```bash
 # Backup database
-bash nour.sh db-backup
+bash norex.sh db-backup
 
 # Backup saved di project root dengan timestamp
 ```
@@ -223,9 +223,9 @@ bash nour.sh db-backup
 ### 5. PHP Version Switching
 ```bash
 # Test aplikasi di PHP berbeda
-bash nour.sh php 8.1
-bash nour.sh php 8.2
-bash nour.sh php 8.3
+bash norex.sh php 8.1
+bash norex.sh php 8.2
+bash norex.sh php 8.3
 ```
 
 ---
@@ -252,7 +252,7 @@ echo '<?php phpinfo(); ?>' > index.php
 
 ### Install PHP Package (Composer)
 ```bash
-bash nour.sh shell
+bash norex.sh shell
 # Inside container:
 composer require vendor/package
 exit
@@ -261,14 +261,14 @@ exit
 ### Database Operations
 ```bash
 # Shell
-bash nour.sh db-shell
+bash norex.sh db-shell
 # Inside MySQL:
 SHOW DATABASES;
-USE nour_db;
+USE norex_db;
 SHOW TABLES;
 
 # Backup
-bash nour.sh db-backup
+bash norex.sh db-backup
 ```
 
 ### Python Automation
@@ -285,7 +285,7 @@ print(f'PHP Version detected!')
 EOF
 
 # Run it
-bash nour.sh python automation.py
+bash norex.sh python automation.py
 ```
 
 ---
@@ -294,13 +294,13 @@ bash nour.sh python automation.py
 
 ```bash
 # Quick health check
-bash nour.sh verify
+bash norex.sh verify
 
 # System information
-bash nour.sh info
+bash norex.sh info
 
 # View all commands
-bash nour.sh help
+bash norex.sh help
 ```
 
 **Documentation:** `/app/docs/`
@@ -309,15 +309,15 @@ bash nour.sh help
 
 ## 🎉 You're Ready!
 
-Sekarang Anda sudah siap menggunakan NourProject!
+Sekarang Anda sudah siap menggunakan NorexProject!
 
 **Workflow sederhana:**
-1. `bash nour.sh start` → Services running
-2. `bash nour.sh gui` → GUI launched
+1. `bash norex.sh start` → Services running
+2. `bash norex.sh gui` → GUI launched
 3. Right-click untuk quick actions
 4. Code di `/app/www/`
 5. Enjoy! 🚀
 
 ---
 
-*NourProject - Making PHP development powerful, modern, and enjoyable!*
+*NorexProject - Making PHP development powerful, modern, and enjoyable!*

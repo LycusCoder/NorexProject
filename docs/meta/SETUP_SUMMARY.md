@@ -1,4 +1,4 @@
-# 📝 NourProject - Setup Summary
+# 📝 NorexProject - Setup Summary
 
 ## ✅ Fase Awal Setup - COMPLETED!
 
@@ -33,7 +33,7 @@ Status: **READY TO USE** 🎉
 - Service `web`: Changed from `image: php:8.2-apache` → `build: .`
 - Service `db`: Password = `041201` ✅
 - Service `pma`: Password = `041201` ✅ (synchronized!)
-- Added custom network: `nour_network`
+- Added custom network: `norex_network`
 - Environment variables for database connection
 - Auto-restart enabled for all services
 
@@ -104,7 +104,7 @@ Status: **READY TO USE** 🎉
 bash scripts/check-system.sh
 ```
 
-2. **Start NourProject**:
+2. **Start NorexProject**:
 ```bash
 bash scripts/start.sh
 ```
@@ -147,7 +147,7 @@ bash scripts/stop.sh
 
 ### ✅ 4. Sistem Lebih Baik dari Laragon & XAMPP
 
-| Feature | NourProject | Laragon | XAMPP |
+| Feature | NorexProject | Laragon | XAMPP |
 |---------|-------------|---------|-------|
 | Cross-platform | ✅ | ❌ | ✅ |
 | Version Switching | ✅ | ✅ | ❌ |
@@ -165,7 +165,7 @@ bash scripts/stop.sh
 ## 📦 Project Structure
 
 ```
-NourProject/
+NorexProject/
 │
 ├── 📄 Dockerfile                    # PHP 8.2 with all extensions
 ├── 📄 docker-compose.yml            # Services configuration
@@ -281,7 +281,7 @@ bash scripts/stop.sh
 3. **Data persists** in `data/mysql/` folder
 4. **Backups saved** in `backups/` folder
 5. **Use `db` as hostname** in PHP (not `localhost`)
-6. **All scripts must run from project root**: `cd NourProject`
+6. **All scripts must run from project root**: `cd NorexProject`
 
 ---
 
@@ -302,7 +302,7 @@ User can now:
 ### Daily Development:
 ```bash
 # Morning routine
-cd ~/NourProject
+cd ~/NorexProject
 bash scripts/start.sh
 
 # Develop your app in www/

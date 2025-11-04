@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################################################################################
-# NourProject - Verification & Health Check Script
+# NorexProject - Verification & Health Check Script
 ################################################################################
 
 set -e
@@ -17,9 +17,26 @@ NC='\033[0m'
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd .. && pwd)"
 
+# Setup logging
+LOG_DIR="$PROJECT_ROOT/logs"
+LOG_FILE="$LOG_DIR/verify.log"
+
+# Create logs directory if not exists
+mkdir -p "$LOG_DIR"
+
+# Function to log with timestamp
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+# Clear old log and start new session
+echo "═══════════════════════════════════════════════════════════════" > "$LOG_FILE"
+log_message "🔍 VERIFY SCRIPT - Session started"
+log_message "═══════════════════════════════════════════════════════════"
+
 echo -e "${CYAN}"
 echo "═══════════════════════════════════════════════════════════════"
-echo "          🔍 NourProject Verification & Health Check          "
+echo "          🔍 NorexProject Verification & Health Check          "
 echo "═══════════════════════════════════════════════════════════════"
 echo -e "${NC}"
 
@@ -29,16 +46,19 @@ WARN=0
 
 check_pass() {
     echo -e "  ${GREEN}✓${NC} $1"
+    log_message "  ✓ PASS: $1"
     ((PASS++))
 }
 
 check_fail() {
     echo -e "  ${RED}✗${NC} $1"
+    log_message "  ✗ FAIL: $1"
     ((FAIL++))
 }
 
 check_warn() {
     echo -e "  ${YELLOW}⚠${NC} $1"
+    log_message "  ⚠ WARN: $1"
     ((WARN++))
 }
 
@@ -59,18 +79,25 @@ else
     check_fail "Docker daemon not running"
 fi
 
-# Python
-if command -v python3 &> /dev/null; then
-    check_pass "Python 3 installed ($(python3 --version | cut -d' ' -f2))"
+# Node.js (for Tauri GUI)
+if command -v node &> /dev/null; then
+    check_pass "Node.js installed ($(node --version))"
 else
-    check_warn "Python 3 not installed (needed for GUI)"
+    check_warn "Node.js not installed (needed for GUI development)"
 fi
 
-# PySide6
-if python3 -c "import PySide6" 2>/dev/null; then
-    check_pass "PySide6 installed (GUI ready)"
+# Yarn
+if command -v yarn &> /dev/null; then
+    check_pass "Yarn installed ($(yarn --version))"
 else
-    check_warn "PySide6 not installed (GUI unavailable)"
+    check_warn "Yarn not installed (needed for GUI)"
+fi
+
+# Rust (for Tauri)
+if command -v rustc &> /dev/null; then
+    check_pass "Rust installed ($(rustc --version | cut -d' ' -f2))"
+else
+    check_warn "Rust not installed (needed for GUI build)"
 fi
 
 echo ""
@@ -103,20 +130,26 @@ else
     check_fail "Dockerfile missing"
 fi
 
-if [ -f "$PROJECT_ROOT/nour.sh" ]; then
-    if [ -x "$PROJECT_ROOT/nour.sh" ]; then
-        check_pass "nour.sh (executable)"
+if [ -f "$PROJECT_ROOT/norex.sh" ]; then
+    if [ -x "$PROJECT_ROOT/norex.sh" ]; then
+        check_pass "norex.sh (executable)"
     else
-        check_warn "nour.sh (not executable)"
+        check_warn "norex.sh (not executable)"
     fi
 else
-    check_fail "nour.sh missing"
+    check_fail "norex.sh missing"
 fi
 
-if [ -f "$PROJECT_ROOT/gui/main.py" ]; then
-    check_pass "gui/main.py"
+if [ -f "$PROJECT_ROOT/gui/src/App.tsx" ]; then
+    check_pass "gui/src/App.tsx (Tauri GUI)"
 else
-    check_fail "gui/main.py missing"
+    check_fail "gui/src/App.tsx missing"
+fi
+
+if [ -f "$PROJECT_ROOT/gui/src-tauri/Cargo.toml" ]; then
+    check_pass "gui/src-tauri/Cargo.toml (Tauri backend)"
+else
+    check_warn "gui/src-tauri/Cargo.toml missing"
 fi
 
 if [ -f "$PROJECT_ROOT/scripts/python.sh" ]; then
@@ -130,13 +163,40 @@ else
 fi
 
 echo ""
-echo -e "${BOLD}4. Docker Services${NC}"
+echo -e "${BOLD}4. Docker Images${NC}"
+echo "───────────────────────"
+
+if docker info &> /dev/null 2>&1; then
+    # Check if images exist
+    if docker images --format "{{.Repository}}" | grep -q "^norexproject-web$"; then
+        check_pass "Custom PHP image (norexproject-web)"
+    else
+        check_warn "Custom PHP image not built yet (run 'bash norex.sh start')"
+    fi
+    
+    if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "^mysql:8.0$"; then
+        check_pass "MySQL 8.0 image"
+    else
+        check_warn "MySQL 8.0 image not downloaded yet"
+    fi
+    
+    if docker images --format "{{.Repository}}" | grep -q "^phpmyadmin/phpmyadmin$"; then
+        check_pass "phpMyAdmin image"
+    else
+        check_warn "phpMyAdmin image not downloaded yet"
+    fi
+else
+    check_fail "Cannot check Docker images (daemon not running)"
+fi
+
+echo ""
+echo -e "${BOLD}5. Docker Containers${NC}"
 echo "───────────────────────"
 
 if docker info &> /dev/null 2>&1; then
     # Check if containers exist
-    if docker ps -a --format "{{.Names}}" | grep -q "nour_apache"; then
-        if docker ps --format "{{.Names}}" | grep -q "nour_apache"; then
+    if docker ps -a --format "{{.Names}}" | grep -q "norex_apache"; then
+        if docker ps --format "{{.Names}}" | grep -q "norex_apache"; then
             check_pass "Apache container (running)"
         else
             check_warn "Apache container (stopped)"
@@ -145,8 +205,8 @@ if docker info &> /dev/null 2>&1; then
         check_warn "Apache container not created yet"
     fi
     
-    if docker ps -a --format "{{.Names}}" | grep -q "nour_mysql"; then
-        if docker ps --format "{{.Names}}" | grep -q "nour_mysql"; then
+    if docker ps -a --format "{{.Names}}" | grep -q "norex_mysql"; then
+        if docker ps --format "{{.Names}}" | grep -q "norex_mysql"; then
             check_pass "MySQL container (running)"
         else
             check_warn "MySQL container (stopped)"
@@ -155,8 +215,8 @@ if docker info &> /dev/null 2>&1; then
         check_warn "MySQL container not created yet"
     fi
     
-    if docker ps -a --format "{{.Names}}" | grep -q "nour_pma"; then
-        if docker ps --format "{{.Names}}" | grep -q "nour_pma"; then
+    if docker ps -a --format "{{.Names}}" | grep -q "norex_pma"; then
+        if docker ps --format "{{.Names}}" | grep -q "norex_pma"; then
             check_pass "phpMyAdmin container (running)"
         else
             check_warn "phpMyAdmin container (stopped)"
@@ -169,11 +229,11 @@ else
 fi
 
 echo ""
-echo -e "${BOLD}5. Network Connectivity${NC}"
+echo -e "${BOLD}6. Network Connectivity${NC}"
 echo "───────────────────────"
 
 # Check if services are accessible
-if docker ps --format "{{.Names}}" | grep -q "nour_apache"; then
+if docker ps --format "{{.Names}}" | grep -q "norex_apache"; then
     if curl -s http://localhost:8080 > /dev/null 2>&1; then
         check_pass "Web server accessible (http://localhost:8080)"
     else
@@ -183,7 +243,7 @@ else
     check_warn "Web server not running"
 fi
 
-if docker ps --format "{{.Names}}" | grep -q "nour_pma"; then
+if docker ps --format "{{.Names}}" | grep -q "norex_pma"; then
     if curl -s http://localhost:8081 > /dev/null 2>&1; then
         check_pass "phpMyAdmin accessible (http://localhost:8081)"
     else
@@ -194,7 +254,7 @@ else
 fi
 
 echo ""
-echo -e "${BOLD}6. Documentation${NC}"
+echo -e "${BOLD}7. Documentation${NC}"
 echo "───────────────────────"
 
 for doc in "README.md" "docs/README.md" "docs/guides/PHASE_3_COMPLETE.md" "docs/guides/PHASE_3_QUICK_START.md"; do
@@ -212,6 +272,9 @@ echo "                    Verification Summary                       "
 echo "═══════════════════════════════════════════════════════════════"
 echo -e "${NC}"
 
+log_message "═══════════════════════════════════════════════════════════"
+log_message "Verification Summary: PASS=$PASS, WARN=$WARN, FAIL=$FAIL"
+
 echo -e "${GREEN}Passed:${NC}  $PASS checks"
 echo -e "${YELLOW}Warnings:${NC} $WARN checks"
 echo -e "${RED}Failed:${NC}  $FAIL checks"
@@ -219,12 +282,21 @@ echo ""
 
 if [ $FAIL -eq 0 ]; then
     if [ $WARN -eq 0 ]; then
-        echo -e "${GREEN}✅ All checks passed! NourProject is ready to use.${NC}"
+        log_message "✅ All checks passed! NorexProject is ready to use."
+        echo -e "${GREEN}✅ All checks passed! NorexProject is ready to use.${NC}"
     else
+        log_message "⚠️ Some warnings detected, but system is functional."
         echo -e "${YELLOW}⚠️  Some warnings detected, but system is functional.${NC}"
     fi
+    echo ""
+    echo "📄 View logs: Check /app/logs/verify.log"
+    echo ""
     exit 0
 else
+    log_message "❌ Some checks failed. Please fix the issues above."
     echo -e "${RED}❌ Some checks failed. Please fix the issues above.${NC}"
+    echo ""
+    echo "📄 View logs: Check /app/logs/verify.log"
+    echo ""
     exit 1
 fi

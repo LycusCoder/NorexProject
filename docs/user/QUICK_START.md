@@ -1,10 +1,10 @@
-# 🚀 NourProject - Quick Start Guide
+# 🚀 NorexProject - Quick Start Guide
 
 ## ⚡ Instant Commands
 
 ### Start Everything
 ```bash
-cd /path/to/NourProject
+cd /path/to/NorexProject
 bash scripts/start.sh
 ```
 
@@ -53,7 +53,7 @@ bash scripts/logs.sh pma
 ### Backup Database
 ```bash
 bash scripts/backup-db.sh
-# Saved to: ./backups/nour_db_YYYYMMDD_HHMMSS.sql
+# Saved to: ./backups/norex_db_YYYYMMDD_HHMMSS.sql
 ```
 
 ---
@@ -63,7 +63,7 @@ bash scripts/backup-db.sh
 ### PHP Connection Info
 ```php
 Host: 'db'              // Important: use 'db', not 'localhost'!
-Database: 'nour_db'
+Database: 'norex_db'
 Username: 'root'
 Password: '041201'
 ```
@@ -71,7 +71,7 @@ Password: '041201'
 ### MySQLi Example
 ```php
 <?php
-$conn = new mysqli('db', 'root', '041201', 'nour_db');
+$conn = new mysqli('db', 'root', '041201', 'norex_db');
 if ($conn->connect_error) {
     die("Error: " . $conn->connect_error);
 }
@@ -83,7 +83,7 @@ $conn->close();
 ### PDO Example
 ```php
 <?php
-$pdo = new PDO('mysql:host=db;dbname=nour_db', 'root', '041201');
+$pdo = new PDO('mysql:host=db;dbname=norex_db', 'root', '041201');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 ?>
 ```
@@ -93,7 +93,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 ## 📂 Where to Put Your Files
 
 ```
-NourProject/
+NorexProject/
 └── www/                 ← Put your PHP files here!
     ├── index.php        ← Homepage
     ├── db_test.php      ← Test page

@@ -1,4 +1,4 @@
-# 🎉 NourProject Phase 2 - COMPLETION SUMMARY
+# 🎉 NorexProject Phase 2 - COMPLETION SUMMARY
 
 ## ✅ Phase 2 Goals - ACHIEVED!
 
@@ -166,7 +166,7 @@
 
 ## 🎯 How It Compares to Laragon/XAMPP
 
-### NourProject Advantages
+### NorexProject Advantages
 1. ✅ **Cross-platform** (Laragon is Windows-only)
 2. ✅ **Docker isolation** (Laragon/XAMPP install globally)
 3. ✅ **Modern tech stack** (Latest PHP, MySQL 8.0)
@@ -218,7 +218,7 @@
 ✅ Web port parsed: 8080
 ✅ PMA port parsed: 8081
 ✅ MySQL port parsed: 3306
-✅ Database name parsed: nour_db
+✅ Database name parsed: norex_db
 ✅ Database password parsed: 041201
 ✅ All parsing tests passed
 ```
@@ -401,7 +401,7 @@ Inspired by:
 
 ## 🎊 PHASE 2 COMPLETE!
 
-**NourProject** sekarang memiliki:
+**NorexProject** sekarang memiliki:
 - ✅ GUI Desktop Native yang powerful
 - ✅ Konfigurasi yang mudah tanpa manual edit
 - ✅ Support untuk localhost:80
@@ -415,4 +415,4 @@ Inspired by:
 ---
 
 *Made with ❤️ for the developer community*
-*NourProject - Your powerful PHP development environment!*
+*NorexProject - Your powerful PHP development environment!*

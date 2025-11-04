@@ -191,7 +191,7 @@ Phase 2 → Phase 3:
 🎉 READY FOR LAUNCH!
 ═══════════════════════════════════════════════════════════════════
 
-NourProject Phase 3 is complete and ready for production use!
+NorexProject Phase 3 is complete and ready for production use!
 
 Key Features:
 • Modern, professional UI/UX
@@ -208,7 +208,7 @@ Next Steps:
 
 ═══════════════════════════════════════════════════════════════════
 
-NourProject - Powerful like Laragon, Cross-platform like Docker,
+NorexProject - Powerful like Laragon, Cross-platform like Docker,
               Beautiful by Design! ✨
 
 ═══════════════════════════════════════════════════════════════════

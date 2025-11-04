@@ -1,10 +1,10 @@
 #!/bin/bash
-# NourProject - First Time Setup Checker
+# NorexProject - First Time Setup Checker
 # Run this to verify your system is ready
 
 echo ""
 echo "═══════════════════════════════════════════════════════════"
-echo "  🔍 NourProject - System Requirements Check"
+echo "  🔍 NorexProject - System Requirements Check"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 

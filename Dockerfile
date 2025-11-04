@@ -1,4 +1,4 @@
-# NourProject - PHP 8.2 with All Essential Extensions
+# NorexProject - PHP 8.2 with All Essential Extensions
 # Lebih lengkap dari Laragon & XAMPP!
 
 FROM php:8.2-apache

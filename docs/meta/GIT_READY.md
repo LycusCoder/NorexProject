@@ -1,4 +1,4 @@
-# 🎯 NourProject - Git Ready Checklist
+# 🎯 NorexProject - Git Ready Checklist
 
 ## ✅ File yang AKAN di-commit ke Git
 
@@ -130,7 +130,7 @@ git add .
 git status
 
 # Commit
-git commit -m "🚀 Initial commit: NourProject setup complete
+git commit -m "🚀 Initial commit: NorexProject setup complete
 
 - Docker-based PHP 8.2 environment
 - MySQL 8.0 + phpMyAdmin
@@ -140,7 +140,7 @@ git commit -m "🚀 Initial commit: NourProject setup complete
 - Better than Laragon & XAMPP!"
 
 # Add remote (replace with your repo)
-git remote add origin https://github.com/yourusername/NourProject.git
+git remote add origin https://github.com/yourusername/NorexProject.git
 
 # Push
 git push -u origin main
@@ -161,8 +161,8 @@ git status | grep ".DS_Store"       # Should NOT appear
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/yourusername/NourProject.git
-cd NourProject
+git clone https://github.com/yourusername/NorexProject.git
+cd NorexProject
 ```
 
 ### 2. Start Using
@@ -181,7 +181,7 @@ bash scripts/start.sh
 
 ### 3. Their Local Files (Auto-created, not tracked)
 ```
-NourProject/
+NorexProject/
 ├── data/                    ⚠️ Created on first run
 │   └── mysql/               ⚠️ MySQL data (ignored)
 ├── backups/                 
@@ -210,7 +210,7 @@ NourProject/
 
 ## 🎉 Result
 
-Your NourProject is now:
+Your NorexProject is now:
 - ✅ **Git-ready** - Safe to commit and push
 - ✅ **Privacy-protected** - No sensitive data will leak
 - ✅ **Portable** - Anyone can clone and run
@@ -267,4 +267,4 @@ git commit -m "🔧 Fix: Add filename to .gitignore"
 
 ---
 
-**Your NourProject is Git-ready and protected! 🎉🔒**
+**Your NorexProject is Git-ready and protected! 🎉🔒**

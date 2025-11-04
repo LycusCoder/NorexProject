@@ -1,4 +1,4 @@
-# 🎨 NourProject Desktop GUI - Installation Guide
+# 🎨 NorexProject Desktop GUI - Installation Guide
 
 ## 📋 Prerequisites
 
@@ -58,9 +58,9 @@ sudo pacman -S \
 
 ## 🚀 Installation Steps
 
-### 1. Clone or Navigate to NourProject
+### 1. Clone or Navigate to NorexProject
 ```bash
-cd /path/to/NourProject
+cd /path/to/NorexProject
 ```
 
 ### 2. Install Python Dependencies
@@ -192,7 +192,7 @@ cd gui
 bash build.sh
 ```
 
-Executable will be created in `dist/NourProject-Desktop`
+Executable will be created in `dist/NorexProject-Desktop`
 
 ### Custom Themes
 
@@ -257,6 +257,6 @@ Or disable completely:
 4. Check GitHub issues (if available)
 5. Contact maintainer
 
-## 🎉 Enjoy NourProject!
+## 🎉 Enjoy NorexProject!
 
 Your powerful, modern PHP development environment with native GUI! 🚀

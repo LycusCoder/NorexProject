@@ -148,7 +148,7 @@ After:  [Toolbar] [Hint] [Status] [PHP] [Access] [Logs]
 **Docker Configuration:**
 ```bash
 Image: python:3.11-slim
-Container: nour_python_cli (auto-removed)
+Container: norex_python_cli (auto-removed)
 Mount: /app → /workspace
 Working Dir: /workspace
 ```
@@ -367,6 +367,6 @@ Working Dir: /workspace
 
 ---
 
-**NourProject Phase 3 - Refined, Professional, Ready to Launch!** 🚀
+**NorexProject Phase 3 - Refined, Professional, Ready to Launch!** 🚀
 
 *Powerful like Laragon, Cross-platform like Docker, Beautiful by Design!*

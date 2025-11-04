@@ -377,7 +377,7 @@ Our structure now matches:
 
 ---
 
-**NourProject Phase 2.5 - Clean Architecture COMPLETE!** ✨
+**NorexProject Phase 2.5 - Clean Architecture COMPLETE!** ✨
 
 *Making PHP development not just powerful, but also beautiful!* 🚀
 

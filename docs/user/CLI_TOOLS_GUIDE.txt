@@ -1,8 +1,8 @@
 ═══════════════════════════════════════════════════════════════════════════
-              📘 NourProject CLI Tools - Complete Guide
+              📘 NorexProject CLI Tools - Complete Guide
 ═══════════════════════════════════════════════════════════════════════════
 
-🎯 ONE COMMAND FOR EVERYTHING: bash nour.sh [command]
+🎯 ONE COMMAND FOR EVERYTHING: bash norex.sh [command]
 
 ═══════════════════════════════════════════════════════════════════════════
 📋 GETTING STARTED (Urutan yang Benar)
@@ -10,7 +10,7 @@
 
 1️⃣  FIRST TIME ONLY - Setup
     ────────────────────────────────
-    $ bash nour.sh setup
+    $ bash norex.sh setup
     
     ✅ Apa yang dilakukan:
        • Check Docker & Python
@@ -23,7 +23,7 @@
 
 2️⃣  START SERVICES
     ────────────────────────────────
-    $ bash nour.sh start
+    $ bash norex.sh start
     
     ✅ Apa yang dilakukan:
        • Start Apache (port 8080)
@@ -34,7 +34,7 @@
 
 3️⃣  VERIFY (Optional tapi direkomendasikan)
     ────────────────────────────────
-    $ bash nour.sh verify
+    $ bash norex.sh verify
     
     ✅ Apa yang dilakukan:
        • Check semua requirement
@@ -48,10 +48,10 @@
 4️⃣  LAUNCH GUI atau OPEN BROWSER
     ────────────────────────────────
     Option A - GUI Desktop (Recommended):
-    $ bash nour.sh gui
+    $ bash norex.sh gui
     
     Option B - Browser:
-    $ bash nour.sh open
+    $ bash norex.sh open
     
     ✅ Siap coding! 🚀
 
@@ -61,55 +61,55 @@
 
 🔹 QUICK START
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh setup         First-time installation & dependencies       │
-│ bash nour.sh gui           Launch GUI desktop application               │
-│ bash nour.sh start         Start all Docker services                    │
-│ bash nour.sh stop          Stop all services                            │
-│ bash nour.sh restart       Restart all services                         │
+│ bash norex.sh setup         First-time installation & dependencies       │
+│ bash norex.sh gui           Launch GUI desktop application               │
+│ bash norex.sh start         Start all Docker services                    │
+│ bash norex.sh stop          Stop all services                            │
+│ bash norex.sh restart       Restart all services                         │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 SERVICE MANAGEMENT
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh status        Show service status (running/stopped)        │
-│ bash nour.sh logs          View all service logs                        │
-│ bash nour.sh shell         Open bash shell in Apache container          │
+│ bash norex.sh status        Show service status (running/stopped)        │
+│ bash norex.sh logs          View all service logs                        │
+│ bash norex.sh shell         Open bash shell in Apache container          │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 PHP MANAGEMENT
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh php 8.1       Switch to PHP 8.1                            │
-│ bash nour.sh php 8.2       Switch to PHP 8.2                            │
-│ bash nour.sh php 8.3       Switch to PHP 8.3                            │
-│ bash nour.sh php-info      Show current PHP version                     │
+│ bash norex.sh php 8.1       Switch to PHP 8.1                            │
+│ bash norex.sh php 8.2       Switch to PHP 8.2                            │
+│ bash norex.sh php 8.3       Switch to PHP 8.3                            │
+│ bash norex.sh php-info      Show current PHP version                     │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 DATABASE
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh db-backup     Backup MySQL database                        │
-│ bash nour.sh db-shell      Open MySQL command line (password: 041201)   │
+│ bash norex.sh db-backup     Backup MySQL database                        │
+│ bash norex.sh db-shell      Open MySQL command line (password: 041201)   │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 PYTHON CLI (Docker-based, No host install needed!)
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh python                    Interactive Python 3.11+ shell   │
-│ bash nour.sh python 'print("Hi")'      Execute Python code             │
-│ bash nour.sh python script.py          Run Python script file          │
+│ bash norex.sh python                    Interactive Python 3.11+ shell   │
+│ bash norex.sh python 'print("Hi")'      Execute Python code             │
+│ bash norex.sh python script.py          Run Python script file          │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 UTILITIES
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh verify        Health check & verification                  │
-│ bash nour.sh open          Open main site in browser (port 8080)        │
-│ bash nour.sh pma           Open phpMyAdmin in browser (port 8081)       │
-│ bash nour.sh reset         ⚠️  Reset environment (destroys data!)        │
-│ bash nour.sh update        Update NourProject via git pull              │
+│ bash norex.sh verify        Health check & verification                  │
+│ bash norex.sh open          Open main site in browser (port 8080)        │
+│ bash norex.sh pma           Open phpMyAdmin in browser (port 8081)       │
+│ bash norex.sh reset         ⚠️  Reset environment (destroys data!)        │
+│ bash norex.sh update        Update NorexProject via git pull              │
 └─────────────────────────────────────────────────────────────────────────┘
 
 🔹 INFORMATION
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ bash nour.sh info          System information & status                  │
-│ bash nour.sh version       Version information                          │
-│ bash nour.sh help          Show help menu                               │
+│ bash norex.sh info          System information & status                  │
+│ bash norex.sh version       Version information                          │
+│ bash norex.sh help          Show help menu                               │
 └─────────────────────────────────────────────────────────────────────────┘
 
 ═══════════════════════════════════════════════════════════════════════════
@@ -119,55 +119,55 @@
 🌅 MORNING - Starting Work
 ────────────────────────────────────────────────────────────────────────────
 # Check if everything OK
-$ bash nour.sh verify
+$ bash norex.sh verify
 
 # Start services
-$ bash nour.sh start
+$ bash norex.sh start
 
 # Launch GUI (keep it running all day)
-$ bash nour.sh gui
+$ bash norex.sh gui
 
 # Or just open in browser
-$ bash nour.sh open
+$ bash norex.sh open
 
 ────────────────────────────────────────────────────────────────────────────
 
 🔧 DEVELOPMENT - Common Tasks
 ────────────────────────────────────────────────────────────────────────────
 # Check PHP version
-$ bash nour.sh php-info
+$ bash norex.sh php-info
 
 # Switch PHP if needed
-$ bash nour.sh php 8.3
+$ bash norex.sh php 8.3
 
 # Run Python script for automation
-$ bash nour.sh python deploy.py
+$ bash norex.sh python deploy.py
 
 # Check service status anytime
-$ bash nour.sh status
+$ bash norex.sh status
 
 # View logs if something wrong
-$ bash nour.sh logs
+$ bash norex.sh logs
 
 # Access database
-$ bash nour.sh db-shell
+$ bash norex.sh db-shell
 
 ────────────────────────────────────────────────────────────────────────────
 
 💾 BACKUP - Before Major Changes
 ────────────────────────────────────────────────────────────────────────────
 # Backup database
-$ bash nour.sh db-backup
+$ bash norex.sh db-backup
 
 # Backup saved with timestamp in project root
-# Example: nour_db_backup_2024-11-03_12-30-45.sql
+# Example: norex_db_backup_2024-11-03_12-30-45.sql
 
 ────────────────────────────────────────────────────────────────────────────
 
 🌆 EVENING - End of Day
 ────────────────────────────────────────────────────────────────────────────
 # Optional: Stop services (or leave running)
-$ bash nour.sh stop
+$ bash norex.sh stop
 
 # Services will auto-restart on next boot anyway
 
@@ -180,18 +180,18 @@ $ bash nour.sh stop
 📝 PYTHON AUTOMATION EXAMPLES
 ────────────────────────────────────────────────────────────────────────────
 # Quick calculation
-$ bash nour.sh python 'print(sum(range(1, 101)))'
+$ bash norex.sh python 'print(sum(range(1, 101)))'
 Output: 5050
 
 # Check if web server is up
-$ bash nour.sh python 'import requests; r=requests.get("http://localhost:8080"); print(r.status_code)'
+$ bash norex.sh python 'import requests; r=requests.get("http://localhost:8080"); print(r.status_code)'
 Output: 200
 
 # Parse JSON
-$ bash nour.sh python 'import json; print(json.dumps({"status":"ok"}, indent=2))'
+$ bash norex.sh python 'import json; print(json.dumps({"status":"ok"}, indent=2))'
 
 # Interactive data analysis
-$ bash nour.sh python
+$ bash norex.sh python
 >>> import pandas as pd
 >>> df = pd.read_csv('/workspace/data.csv')
 >>> print(df.head())
@@ -201,24 +201,24 @@ $ bash nour.sh python
 🗄️  DATABASE OPERATIONS
 ────────────────────────────────────────────────────────────────────────────
 # Backup before migration
-$ bash nour.sh db-backup
+$ bash norex.sh db-backup
 
 # Access MySQL shell
-$ bash nour.sh db-shell
+$ bash norex.sh db-shell
 mysql> SHOW DATABASES;
-mysql> USE nour_db;
+mysql> USE norex_db;
 mysql> SHOW TABLES;
 mysql> SELECT * FROM users;
 mysql> exit
 
 # Or via Python
-$ bash nour.sh python
+$ bash norex.sh python
 >>> import mysql.connector
 >>> conn = mysql.connector.connect(
 ...     host="localhost",
 ...     user="root",
 ...     password="041201",
-...     database="nour_db"
+...     database="norex_db"
 ... )
 >>> cursor = conn.cursor()
 >>> cursor.execute("SHOW TABLES")
@@ -228,7 +228,7 @@ $ bash nour.sh python
 🐚 CONTAINER SHELL ACCESS
 ────────────────────────────────────────────────────────────────────────────
 # Access Apache container
-$ bash nour.sh shell
+$ bash norex.sh shell
 
 # Inside container - install packages
 root@container:/# composer require guzzlehttp/guzzle
@@ -240,17 +240,17 @@ root@container:/# exit
 🔄 PHP VERSION TESTING
 ────────────────────────────────────────────────────────────────────────────
 # Test app on PHP 8.1
-$ bash nour.sh php 8.1
-$ bash nour.sh open
+$ bash norex.sh php 8.1
+$ bash norex.sh open
 # Test your app...
 
 # Switch to PHP 8.2
-$ bash nour.sh php 8.2
-$ bash nour.sh open
+$ bash norex.sh php 8.2
+$ bash norex.sh open
 # Test again...
 
 # Back to PHP 8.3
-$ bash nour.sh php 8.3
+$ bash norex.sh php 8.3
 
 ────────────────────────────────────────────────────────────────────────────
 
@@ -260,31 +260,31 @@ $ bash nour.sh php 8.3
 
 Problem: Services won't start
 Solution:
-$ bash nour.sh verify              # Check what's wrong
-$ bash nour.sh logs                # View error logs
-$ bash nour.sh restart             # Try restart
+$ bash norex.sh verify              # Check what's wrong
+$ bash norex.sh logs                # View error logs
+$ bash norex.sh restart             # Try restart
 
 Problem: GUI won't launch
 Solution:
-$ bash nour.sh setup               # Reinstall dependencies
+$ bash norex.sh setup               # Reinstall dependencies
 $ pip3 install PySide6 psutil      # Manual install
 
 Problem: Port conflict
 Solution:
-$ bash nour.sh gui                 # Launch GUI
+$ bash norex.sh gui                 # Launch GUI
 # Click ⚙️ → Ports → Change port → Save
-$ bash nour.sh restart
+$ bash norex.sh restart
 
 Problem: Database connection failed
 Solution:
-$ bash nour.sh status              # Check if MySQL running
-$ bash nour.sh db-shell            # Test connection
-$ bash nour.sh logs | grep mysql   # Check MySQL logs
+$ bash norex.sh status              # Check if MySQL running
+$ bash norex.sh db-shell            # Test connection
+$ bash norex.sh logs | grep mysql   # Check MySQL logs
 
 Problem: Can't access website
 Solution:
-$ bash nour.sh status              # Check services
-$ bash nour.sh verify              # Full health check
+$ bash norex.sh status              # Check services
+$ bash norex.sh verify              # Full health check
 $ curl http://localhost:8080       # Test connection
 
 Problem: Docker not running
@@ -302,18 +302,18 @@ $ sudo systemctl start docker
    ────────────────────────────────────────────────────────────────────────
    Add to ~/.bashrc or ~/.zshrc:
    
-   alias nour="bash /app/nour.sh"
+   alias norex="bash /app/norex.sh"
    
    Then use:
-   $ nour start
-   $ nour gui
-   $ nour python
+   $ norex start
+   $ norex gui
+   $ norex python
    
    Much shorter! ⚡
 
 2. DAILY HEALTH CHECK
    ────────────────────────────────────────────────────────────────────────
-   $ bash nour.sh verify
+   $ bash norex.sh verify
    
    Run this setiap pagi untuk memastikan everything OK!
 
@@ -325,13 +325,13 @@ $ sudo systemctl start docker
 4. AUTOMATE WITH PYTHON
    ────────────────────────────────────────────────────────────────────────
    Create scripts di /app/ dan run dengan:
-   $ bash nour.sh python myscript.py
+   $ bash norex.sh python myscript.py
    
    Project directory auto-mounted at /workspace in Docker!
 
 5. REGULAR BACKUPS
    ────────────────────────────────────────────────────────────────────────
-   $ bash nour.sh db-backup
+   $ bash norex.sh db-backup
    
    Backup before:
    • Major database changes
@@ -349,15 +349,15 @@ $ sudo systemctl start docker
    /app/docs/guides/PHASE_3_COMPLETE.md    Complete guide
 
 🔍 Quick Commands:
-   bash nour.sh help                       Command reference
-   bash nour.sh verify                     Health check
-   bash nour.sh info                       System info
+   bash norex.sh help                       Command reference
+   bash norex.sh verify                     Health check
+   bash norex.sh info                       System info
 
 ═══════════════════════════════════════════════════════════════════════════
 
-🎉 You now have complete control over NourProject!
+🎉 You now have complete control over NorexProject!
 
-One command does it all: bash nour.sh [command]
+One command does it all: bash norex.sh [command]
 
 Happy Coding! 🚀
 

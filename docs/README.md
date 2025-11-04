@@ -1,6 +1,6 @@
-# 📚 NourProject Documentation
+# 📚 NorexProject Documentation
 
-Comprehensive documentation for NourProject - Modern PHP development environment with Native GUI.
+Comprehensive documentation for NorexProject - Modern PHP development environment with Native GUI.
 
 ---
 
@@ -201,6 +201,6 @@ Our documentation aims to:
 
 ---
 
-**NourProject** - Powerful PHP development with excellent documentation! 🚀
+**NorexProject** - Powerful PHP development with excellent documentation! 🚀
 
 *Last updated: Phase 3 - Refined & Production Ready*
