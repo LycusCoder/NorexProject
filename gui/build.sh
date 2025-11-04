@@ -1,47 +1,53 @@
 #!/bin/bash
-# NourProject - Build Executable dengan PyInstaller
-# Creates standalone executable for Linux
 
-echo ""
-echo "═══════════════════════════════════════════════════════════"
-echo "  📦 NourProject - Building Executable"
-echo "═══════════════════════════════════════════════════════════"
+# NorexProject - Tauri Build Script untuk Production
+
+set -e
+
+# Warna untuk output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}🏗️  Building Tauri Application untuk Production...${NC}"
 echo ""
 
-# Check if PyInstaller is installed
-if ! python3 -c "import PyInstaller" 2>/dev/null; then
-    echo "📥 Installing PyInstaller..."
-    pip3 install pyinstaller
-    echo ""
+cd "$(dirname "$0")"
+
+# Function untuk menanyakan konfirmasi
+ask_confirmation() {
+    local prompt="$1"
+    while true; do
+        read -p "$(echo -e ${YELLOW}$prompt${NC}) [y/n]: " yn
+        case $yn in
+            [Yy]* ) return 0;;
+            [Nn]* ) return 1;;
+            * ) echo "Mohon jawab y (yes) atau n (no).";;
+        esac
+    done
+}
+
+# Cek dependencies
+echo -e "${BLUE}📦 Mengecek dependencies...${NC}"
+
+if [ ! -d "node_modules" ]; then
+    echo -e "${YELLOW}⚠️  Installing frontend dependencies...${NC}"
+    npm install
 fi
 
-cd "$(dirname "$0")/.."
-
-echo "🔨 Building NourProject Desktop executable..."
+echo -e "${GREEN}✅ Dependencies ready${NC}"
 echo ""
 
-# Build executable
-pyinstaller --onefile \
-    --windowed \
-    --name="NourProject-Desktop" \
-    --icon=NONE \
-    --add-data="scripts:scripts" \
-    --hidden-import=PySide6 \
-    --hidden-import=psutil \
-    gui/main.py
+# Build
+echo -e "${BLUE}🔨 Starting production build...${NC}"
+echo -e "${YELLOW}ℹ️  Ini bisa memakan waktu beberapa menit...${NC}"
+echo ""
 
-if [ $? -eq 0 ]; then
-    echo ""
-    echo "═══════════════════════════════════════════════════════════"
-    echo "  ✅ Build Successful!"
-    echo "═══════════════════════════════════════════════════════════"
-    echo ""
-    echo "📂 Executable location: dist/NourProject-Desktop"
-    echo ""
-    echo "🚀 Run with: ./dist/NourProject-Desktop"
-    echo ""
-else
-    echo ""
-    echo "❌ Build failed!"
-    echo ""
-fi
+npm run tauri:build
+
+echo ""
+echo -e "${GREEN}✅ Build selesai!${NC}"
+echo -e "${BLUE}📦 Hasil build ada di: src-tauri/target/release/bundle/${NC}"
+echo ""

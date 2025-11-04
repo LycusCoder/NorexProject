@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to NourProject will be documented in this file.
+All notable changes to NorexProject will be documented in this file.
 
 ---
 
@@ -247,13 +247,13 @@ All notable changes to NourProject will be documented in this file.
 
 ## Contributors
 
-NourProject is developed and maintained with ❤️
+NorexProject is developed and maintained with ❤️
 
 ---
 
 ## License
 
-NourProject - Modern PHP Development Environment
+NorexProject - Modern PHP Development Environment
 
 ---
 

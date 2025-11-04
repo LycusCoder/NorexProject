@@ -80,7 +80,7 @@ bash scripts/python.sh 'import os; print(os.listdir("/workspace"))'
 ```bash
 # Quick script
 cd /app
-bash scripts/python.sh 'print("Hello NourProject!")'
+bash scripts/python.sh 'print("Hello NorexProject!")'
 
 # Interactive development
 bash scripts/python.sh
@@ -169,4 +169,4 @@ bash run.sh
 
 ---
 
-**Enjoy the refined NourProject experience!** 🎉
+**Enjoy the refined NorexProject experience!** 🎉

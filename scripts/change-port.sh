@@ -1,5 +1,5 @@
 #!/bin/bash
-# NourProject - Change Web Server Port
+# NorexProject - Change Web Server Port
 # Usage: bash scripts/change-port.sh [port]
 
 PORT="$1"
@@ -12,7 +12,7 @@ fi
 
 echo ""
 echo "═══════════════════════════════════════════════════════════"
-echo "  🔧 NourProject - Changing Web Server Port"
+echo "  🔧 NorexProject - Changing Web Server Port"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 

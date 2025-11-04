@@ -1,14 +1,14 @@
 #!/bin/bash
-# NourProject - Database Backup Script
+# NorexProject - Database Backup Script
 # Usage: bash scripts/backup-db.sh
 
 BACKUP_DIR="./backups"
 DATE=$(date +"%Y%m%d_%H%M%S")
-BACKUP_FILE="$BACKUP_DIR/nour_db_$DATE.sql"
+BACKUP_FILE="$BACKUP_DIR/norex_db_$DATE.sql"
 
 echo ""
 echo "═══════════════════════════════════════════════════════════"
-echo "  💾 NourProject - Database Backup"
+echo "  💾 NorexProject - Database Backup"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 
@@ -16,7 +16,7 @@ echo ""
 mkdir -p "$BACKUP_DIR"
 
 echo "🔄 Creating backup..."
-docker exec nour_mysql mysqldump -u root -p041201 nour_db > "$BACKUP_FILE"
+docker exec norex_mysql mysqldump -u root -p041201 norex_db > "$BACKUP_FILE"
 
 if [ $? -eq 0 ]; then
     echo "✅ Backup created: $BACKUP_FILE"

@@ -1,4 +1,4 @@
-# 🏗️ NourProject - Architecture Overview
+# 🏗️ NorexProject - Architecture Overview
 
 ## 📊 System Architecture
 
@@ -31,9 +31,9 @@
 │                 (docker-compose.yml)                            │
 │                                                                 │
 │   Manages 3 containers in isolated network:                    │
-│   • nour_apache (Web Server)                                   │
-│   • nour_mysql (Database)                                      │
-│   • nour_pma (Admin Tool)                                      │
+│   • norex_apache (Web Server)                                   │
+│   • norex_mysql (Database)                                      │
+│   • norex_pma (Admin Tool)                                      │
 │                                                                 │
 └─────────────────────────────┬───────────────────────────────────┘
                               │
@@ -42,13 +42,13 @@
           ▼                   ▼                   ▼
 ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
 │  Web Container   │ │  MySQL Container │ │  PMA Container   │
-│  (nour_apache)   │ │  (nour_mysql)    │ │  (nour_pma)      │
+│  (norex_apache)   │ │  (norex_mysql)    │ │  (norex_pma)      │
 ├──────────────────┤ ├──────────────────┤ ├──────────────────┤
 │                  │ │                  │ │                  │
 │  Apache 2.4      │ │  MySQL 8.0       │ │  phpMyAdmin      │
 │  PHP 8.1/8.2/8.3 │ │                  │ │                  │
 │                  │ │  Database:       │ │  Web UI for DB   │
-│  Extensions:     │ │  - nour_db       │ │  management      │
+│  Extensions:     │ │  - norex_db       │ │  management      │
 │  • mysqli        │ │                  │ │                  │
 │  • pdo           │ │  User: root      │ │  Access:         │
 │  • gd            │ │  Pass: 041201    │ │  localhost:8081  │
@@ -66,7 +66,7 @@
                               ▼
                     ┌──────────────────┐
                     │  Docker Network  │
-                    │  (nour_network)  │
+                    │  (norex_network)  │
                     └──────────────────┘
 ```
 
@@ -90,9 +90,9 @@ User (GUI/CLI) → Docker Compose → Containers → Services
 3. Docker Compose reads docker-compose.yml
 
 4. Docker starts 3 containers:
-   - nour_apache (web)
-   - nour_mysql (db)
-   - nour_pma (admin)
+   - norex_apache (web)
+   - norex_mysql (db)
+   - norex_pma (admin)
 
 5. Services become available:
    - http://localhost:8080 (web)
@@ -117,7 +117,7 @@ Browser → Apache → PHP → MySQL → PHP → Apache → Browser
 3. PHP interpreter processes the file
 
 4. PHP connects to MySQL:
-   $conn = new mysqli('db', 'root', '041201', 'nour_db');
+   $conn = new mysqli('db', 'root', '041201', 'norex_db');
 
 5. MySQL executes query
 
@@ -247,16 +247,16 @@ User → GUI Settings → docker-compose.yml → Docker → Services
 │       │        │                                            │
 │       │        ├──► Container Isolation                    │
 │       │        │        │                                   │
-│       │        │        ├──► nour_apache (unprivileged)   │
+│       │        │        ├──► norex_apache (unprivileged)   │
 │       │        │        │    - No host access              │
 │       │        │        │    - Isolated filesystem         │
 │       │        │        │    - Port mapping only           │
 │       │        │        │                                   │
-│       │        │        ├──► nour_mysql (unprivileged)    │
+│       │        │        ├──► norex_mysql (unprivileged)    │
 │       │        │        │    - Data in volume              │
 │       │        │        │    - Network isolated            │
 │       │        │        │                                   │
-│       │        │        └──► nour_pma (unprivileged)      │
+│       │        │        └──► norex_pma (unprivileged)      │
 │       │        │             - No direct DB access         │
 │       │        │             - Via MySQL network           │
 │       │        │                                            │
@@ -332,11 +332,11 @@ User → GUI Settings → docker-compose.yml → Docker → Services
 │                 ▼                                         │
 │    ┌──────────────────────────────────────────┐         │
 │    │      Docker Bridge Network               │         │
-│    │         (nour_network)                   │         │
+│    │         (norex_network)                   │         │
 │    │                                          │         │
 │    │  ┌─────────────┐  ┌─────────────┐      │         │
 │    │  │  Container  │  │  Container  │      │         │
-│    │  │  nour_apache│  │  nour_mysql │      │         │
+│    │  │  norex_apache│  │  norex_mysql │      │         │
 │    │  │  IP: 172.x  │◄─┤  IP: 172.x  │      │         │
 │    │  │  Port: 80   │  │  Port: 3306 │      │         │
 │    │  └─────────────┘  └─────────────┘      │         │
@@ -344,7 +344,7 @@ User → GUI Settings → docker-compose.yml → Docker → Services
 │    │         │               │               │         │
 │    │         │         ┌─────┴──────┐        │         │
 │    │         │         │ Container  │        │         │
-│    │         └─────────┤  nour_pma  │        │         │
+│    │         └─────────┤  norex_pma  │        │         │
 │    │                   │  IP: 172.x │        │         │
 │    │                   │  Port: 80  │        │         │
 │    │                   └────────────┘        │         │
@@ -353,13 +353,13 @@ User → GUI Settings → docker-compose.yml → Docker → Services
 └───────────────────────────────────────────────────────────┘
 
 External Access:
-- Browser → localhost:8080 → nour_apache:80
-- Browser → localhost:8081 → nour_pma:80
-- MySQL Client → localhost:3306 → nour_mysql:3306
+- Browser → localhost:8080 → norex_apache:80
+- Browser → localhost:8081 → norex_pma:80
+- MySQL Client → localhost:3306 → norex_mysql:3306
 
 Internal Access (PHP):
-- mysqli('db', ...) → nour_mysql:3306
-- DNS resolution: 'db' → nour_mysql container IP
+- mysqli('db', ...) → norex_mysql:3306
+- DNS resolution: 'db' → norex_mysql container IP
 ```
 
 ---
@@ -443,4 +443,4 @@ Services restart → New config active
 
 ---
 
-*NourProject - Powerful architecture, simple interface! 🚀*
+*NorexProject - Powerful architecture, simple interface! 🚀*

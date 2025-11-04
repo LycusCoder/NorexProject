@@ -1,10 +1,10 @@
 #!/bin/bash
-# NourProject - PHP Version Switcher (Laragon Style)
+# NorexProject - PHP Version Switcher (Laragon Style)
 # Usage: bash scripts/switch-php.sh [version]
 
 echo ""
 echo "═══════════════════════════════════════════════════════════"
-echo "  🔄 NourProject - PHP Version Switcher"
+echo "  🔄 NorexProject - PHP Version Switcher"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 
@@ -34,7 +34,7 @@ echo ""
 
 # Update Dockerfile
 cat > Dockerfile << EOF
-# NourProject - PHP $VERSION with All Essential Extensions
+# NorexProject - PHP $VERSION with All Essential Extensions
 
 FROM php:$VERSION-apache
 

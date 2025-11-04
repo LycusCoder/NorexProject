@@ -1,4 +1,4 @@
-# 🎴 NourProject - Quick Reference Card
+# 🎴 NorexProject - Quick Reference Card
 
 ## 🚀 Quick Start
 
@@ -84,7 +84,7 @@ bash scripts/backup-db.sh      # Backup database
 - **MySQL**: Default 3306
 
 ### Database Tab
-- **Name**: nour_db
+- **Name**: norex_db
 - **User**: root
 - **Password**: 041201 (changeable)
 
@@ -124,7 +124,7 @@ Switch via GUI or CLI
 ### MySQL / phpMyAdmin
 - **Username**: root
 - **Password**: 041201
-- **Database**: nour_db
+- **Database**: norex_db
 - **Host** (in PHP): db
 - **Host** (external): localhost
 
@@ -308,6 +308,6 @@ bash scripts/switch-php.sh 8.3
 
 ---
 
-**NourProject - Your powerful PHP development environment! 🚀**
+**NorexProject - Your powerful PHP development environment! 🚀**
 
 *Keep this card handy for quick reference!*

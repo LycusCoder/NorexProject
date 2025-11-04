@@ -1,5 +1,5 @@
 <?php
-    echo "<h1>NourProject Stack ON!</h1>";
+    echo "<h1>NorexProject Stack ON!</h1>";
     echo "<h2>PHP Version: " . phpversion() . "</h2>";
     // Cek apakah ekstensi MySQL (mysqli) sudah aktif
     if (extension_loaded('mysqli')) {

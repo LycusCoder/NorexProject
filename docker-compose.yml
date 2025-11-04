@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    container_name: nour_apache
+    container_name: norex_apache
     ports:
       - "8080:80"  # web server - change via GUI Settings
     volumes:
@@ -9,32 +9,32 @@ services:
       - ./config/php/php.ini:/usr/local/etc/php/php.ini:ro
     environment:
       - DATABASE_HOST=db
-      - DATABASE_NAME=nour_db
+      - DATABASE_NAME=norex_db
       - DATABASE_USER=root
       - DATABASE_PASSWORD=041201
     depends_on:
       - db
     restart: unless-stopped
     networks:
-      - nour_network
+      - norex_network
 
   db:
     image: mysql:8.0
-    container_name: nour_mysql
+    container_name: norex_mysql
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 041201
-      MYSQL_DATABASE: nour_db
+      MYSQL_DATABASE: norex_db
     volumes:
       - ./data/mysql:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - nour_network
+      - norex_network
     
   pma:
     image: phpmyadmin/phpmyadmin
-    container_name: nour_pma
+    container_name: norex_pma
     ports:
       - "8081:80"  # pma - change via GUI Settings
     environment:
@@ -46,8 +46,8 @@ services:
       - db
     restart: unless-stopped
     networks:
-      - nour_network
+      - norex_network
 
 networks:
-  nour_network:
+  norex_network:
     driver: bridge

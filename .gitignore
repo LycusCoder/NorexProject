@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════
-# NourProject .gitignore
+# NorexProject .gitignore
 # Comprehensive gitignore untuk development environment
 # ═══════════════════════════════════════════════════════════
 
@@ -119,12 +119,32 @@ composer.phar
 .phpunit.result.cache
 .php_cs.cache
 
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 📦 Node.js / NPM (jika ada)
+# 📦 Node.js / NPM / RUST (WAJIB UNTUK TAURI)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Node/NPM
 node_modules/
 package-lock.json
 yarn.lock
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# RUST / TAURI (Backend)
+/src-tauri/target/        # Build output Rust
+/src-tauri/Cargo.lock     # Dependencies lock
+/target/                  # Default Rust target
+
+# GUI Build Files (Frontend)
+dist/                     # Frontend output
+build/                    # Frontend build directory
+
+# PyInstaller / Python Cache (DULU UNTUK PYSIDE6)
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 🗂️ Temporary & Cache Files
@@ -135,6 +155,8 @@ cache/
 *.tmp
 *.cache
 sessions/
+/pkg/                     # Tauri/wasm temporary package dir
+/src-tauri/out/           # Tauri build cache
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 🧪 Testing

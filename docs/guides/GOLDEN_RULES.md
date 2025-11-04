@@ -1,4 +1,4 @@
-# 📜 NourProject - Golden Rules
+# 📜 NorexProject - Golden Rules
 
 **Version:** 1.0  
 **Last Updated:** Phase 3  
@@ -59,7 +59,7 @@
 ├── data/                  # Persistent data only
 │   └── mysql/             # MySQL data
 │
-├── nour.sh                # Main CLI tool (root only)
+├── norex.sh                # Main CLI tool (root only)
 ├── docker-compose.yml     # Docker config (root only)
 ├── Dockerfile             # Docker build (root only)
 ├── README.md              # Main readme (root only)
@@ -75,12 +75,12 @@
 | PHP code | `/app/www/` | `index.php`, user files |
 | Documentation | `/app/docs/` | Guides, references |
 | Docker configs | `/app/` (root) | `docker-compose.yml`, `Dockerfile` |
-| Main CLI | `/app/nour.sh` | Single entry point |
+| Main CLI | `/app/norex.sh` | Single entry point |
 
 ### **Root Directory (Keep Clean!)**
 
 **✅ Allowed in Root:**
-- `nour.sh` - Main CLI tool
+- `norex.sh` - Main CLI tool
 - `docker-compose.yml` - Docker orchestration
 - `Dockerfile` - Docker build
 - `README.md` - Project readme
@@ -94,7 +94,7 @@
 - Temporary scripts
 - Backup files (*.bak, *.old)
 - IDE configs (move to .gitignore)
-- Multiple CLI tools (only nour.sh!)
+- Multiple CLI tools (only norex.sh!)
 - Duplicate documentation
 
 ### **Documentation Organization**
@@ -243,7 +243,7 @@ Warning:    #ffa500
 #### **Naming Conventions**
 ```python
 # Classes: PascalCase
-class NourProjectGUI:
+class NorexProjectGUI:
     pass
 
 # Functions/methods: snake_case
@@ -313,7 +313,7 @@ DEFAULT_PORT=8080
 
 # Variables: snake_case
 current_status="running"
-container_name="nour_apache"
+container_name="norex_apache"
 ```
 
 #### **Error Handling**
@@ -599,10 +599,10 @@ python3 -m py_compile gui/main.py
 bash -n scripts/start.sh
 
 # Verify installation
-bash nour.sh verify
+bash norex.sh verify
 
 # Health check
-bash nour.sh status
+bash norex.sh status
 ```
 
 ---
@@ -756,7 +756,7 @@ worker.start()
 ```
 ✅ **Clear instructions**
 ```
-"Run: bash nour.sh start"
+"Run: bash norex.sh start"
 ```
 
 ❌ **Outdated docs**
@@ -892,4 +892,4 @@ Only essential files!
 
 ---
 
-*NourProject Golden Rules v1.0 - Your guide to excellence!*
+*NorexProject Golden Rules v1.0 - Your guide to excellence!*

@@ -9,7 +9,7 @@
 
 BEFORE (Phase 2):                    AFTER (Phase 3):
 ┌──────────────────────┐            ┌──────────────────────┐
-│  🚀 NourProject      │            │ ⚙️     🚀 NourProject │ Phase 3
+│  🚀 NorexProject      │            │ ⚙️     🚀 NorexProject │ Phase 3
 │                      │            │  💡 Right-click hint   │
 │ [Status Indicators]  │            │ [Enhanced Indicators]  │
 │                      │            │  (24px with gradient)  │
@@ -138,7 +138,7 @@ Hint Label           ❌              ✅               User guidance
 Interactive Shell:
 $ bash scripts/python.sh
 ╔═══════════════════════════════════════════════════╗
-║     🐍 NourProject Python CLI (Docker)          ║
+║     🐍 NorexProject Python CLI (Docker)          ║
 ║     Python 3.11+ Isolated Environment            ║
 ╚═══════════════════════════════════════════════════╝
 ✅ Docker is ready
@@ -153,7 +153,7 @@ Hello from Docker!
 Execute Code:
 $ bash scripts/python.sh 'print(sum(range(1, 101)))'
 ╔═══════════════════════════════════════════════════╗
-║     🐍 NourProject Python CLI (Docker)          ║
+║     🐍 NorexProject Python CLI (Docker)          ║
 ╚═══════════════════════════════════════════════════╝
 🚀 Executing Python code...
 5050
@@ -163,7 +163,7 @@ Run Script:
 $ echo 'for i in range(5): print(f"Line {i}")' > test.py
 $ bash scripts/python.sh test.py
 ╔═══════════════════════════════════════════════════╗
-║     🐍 NourProject Python CLI (Docker)          ║
+║     🐍 NorexProject Python CLI (Docker)          ║
 ╚═══════════════════════════════════════════════════╝
 🚀 Running Python script: test.py
 Line 0
@@ -193,7 +193,7 @@ Overall UX:       ⭐⭐⭐     ⭐⭐⭐⭐⭐    Laragon-like achieved!
 │ SUMMARY                                                                 │
 └─────────────────────────────────────────────────────────────────────────┘
 
-Phase 3 transforms NourProject from a functional tool to a polished,
+Phase 3 transforms NorexProject from a functional tool to a polished,
 professional desktop application that rivals commercial products like Laragon.
 
 Key Achievements:
@@ -212,5 +212,5 @@ The user experience is now:
 • More professional (toolbar, tray, polish)
 
 ╔═══════════════════════════════════════════════════════════════════════════╗
-║  NourProject Phase 3: From Good to Great! 🚀                             ║
+║  NorexProject Phase 3: From Good to Great! 🚀                             ║
 ╚═══════════════════════════════════════════════════════════════════════════╝

@@ -1,6 +1,6 @@
-# 📦 NourProject - Installation Guide
+# 📦 NorexProject - Installation Guide
 
-Panduan instalasi lengkap NourProject di Linux (Ubuntu/Debian based).
+Panduan instalasi lengkap NorexProject di Linux (Ubuntu/Debian based).
 
 ---
 
@@ -93,28 +93,28 @@ docker compose version
 
 ---
 
-## 📥 Get NourProject
+## 📥 Get NorexProject
 
 ### Option 1: Clone from Git (if available)
 ```bash
-git clone <your-repo-url> NourProject
-cd NourProject
+git clone <your-repo-url> NorexProject
+cd NorexProject
 ```
 
 ### Option 2: Download ZIP
 ```bash
-# Extract the downloaded NourProject.zip
-unzip NourProject.zip
-cd NourProject
+# Extract the downloaded NorexProject.zip
+unzip NorexProject.zip
+cd NorexProject
 ```
 
 ### Option 3: Manual Setup
 ```bash
 # Create directory
-mkdir -p NourProject
-cd NourProject
+mkdir -p NorexProject
+cd NorexProject
 
-# Copy all NourProject files here
+# Copy all NorexProject files here
 # Make sure you have:
 #   - Dockerfile
 #   - docker-compose.yml
@@ -138,7 +138,7 @@ If all checks pass, you're ready!
 
 ## 🎯 First Run
 
-### Start NourProject:
+### Start NorexProject:
 ```bash
 bash scripts/start.sh
 ```
@@ -233,7 +233,7 @@ sudo systemctl start docker
 sudo lsof -i :8080
 sudo lsof -i :3306
 
-# Kill the process or change NourProject ports (see Configuration above)
+# Kill the process or change NorexProject ports (see Configuration above)
 ```
 
 ### Issue: "Permission denied" errors
@@ -313,9 +313,9 @@ You now have a development environment that's:
 1. **Create alias for easier access:**
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-alias nour-start="cd ~/NourProject && bash scripts/start.sh"
-alias nour-stop="cd ~/NourProject && bash scripts/stop.sh"
-alias nour-status="cd ~/NourProject && bash scripts/status.sh"
+alias norex-start="cd ~/NorexProject && bash scripts/start.sh"
+alias norex-stop="cd ~/NorexProject && bash scripts/stop.sh"
+alias norex-status="cd ~/NorexProject && bash scripts/status.sh"
 
 # Reload shell
 source ~/.bashrc
@@ -323,19 +323,19 @@ source ~/.bashrc
 
 2. **Create desktop shortcut (GNOME):**
 ```bash
-cat > ~/Desktop/NourProject.desktop << 'EOF'
+cat > ~/Desktop/NorexProject.desktop << 'EOF'
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=NourProject
-Comment=Start NourProject Development Environment
-Exec=bash -c "cd ~/NourProject && bash scripts/start.sh; exec bash"
+Name=NorexProject
+Comment=Start NorexProject Development Environment
+Exec=bash -c "cd ~/NorexProject && bash scripts/start.sh; exec bash"
 Icon=utilities-terminal
 Terminal=true
 Categories=Development;
 EOF
 
-chmod +x ~/Desktop/NourProject.desktop
+chmod +x ~/Desktop/NorexProject.desktop
 ```
 
 3. **Backup automation:**
@@ -343,7 +343,7 @@ chmod +x ~/Desktop/NourProject.desktop
 # Add to crontab for daily backups at 2 AM
 crontab -e
 # Add line:
-0 2 * * * cd ~/NourProject && bash scripts/backup-db.sh
+0 2 * * * cd ~/NorexProject && bash scripts/backup-db.sh
 ```
 
 ---

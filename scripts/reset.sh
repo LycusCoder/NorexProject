@@ -1,5 +1,5 @@
 #!/bin/bash
-# NourProject - Complete Reset
+# NorexProject - Complete Reset
 # WARNING: This will delete all data!
 
 echo ""
@@ -20,7 +20,7 @@ echo "🗑️ Removing data..."
 rm -rf data/mysql
 
 echo "🗑️ Removing images..."
-docker rmi nour-web 2>/dev/null
+docker rmi norex-web 2>/dev/null
 
 echo ""
 echo "✅ Reset complete!"

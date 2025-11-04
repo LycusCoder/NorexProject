@@ -1,11 +1,11 @@
-# 🚀 NourProject
+# 🚀 NorexProject
 
 **Modern PHP development environment with Native Desktop GUI**  
 *Powerful like Laragon, Cross-platform like Docker!*
 
 ---
 
-## ✨ What is NourProject?
+## ✨ What is NorexProject?
 
 Complete PHP development stack featuring:
 - 🖥️ **Native Desktop GUI** - Laragon-style control panel  
@@ -21,26 +21,26 @@ Complete PHP development stack featuring:
 
 ### First Time Setup
 ```bash
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 ### Start & Launch
 ```bash
 # Start services
-bash nour.sh start
+bash norex.sh start
 
 # Launch GUI (recommended)
-bash nour.sh gui
+bash norex.sh gui
 ```
 
 ### Or use any command
 ```bash
-bash nour.sh help    # See all commands
+bash norex.sh help    # See all commands
 ```
 
 **That's it!** You're ready to develop.
 
-> 💡 **Tip:** Use `bash nour.sh` for all operations - one command for everything!
+> 💡 **Tip:** Use `bash norex.sh` for all operations - one command for everything!
 
 ---
 
@@ -105,7 +105,7 @@ PDO • MySQLi • MBString • BCMath • Exif • SOAP • cURL
 ## 🏗️ Project Structure
 
 ```
-NourProject/
+NorexProject/
 ├── gui/           # Desktop GUI application  
 ├── www/           # Your PHP files  
 ├── scripts/       # Management scripts
@@ -121,30 +121,30 @@ NourProject/
 
 **First Time Setup**
 ```bash
-bash nour.sh setup
+bash norex.sh setup
 ```
 
 **Start Development**
 ```bash
-bash nour.sh start && bash nour.sh gui
+bash norex.sh start && bash norex.sh gui
 ```
 
 **Quick Actions**
 ```bash
-bash nour.sh python              # Python CLI
-bash nour.sh php 8.3             # Switch PHP version
-bash nour.sh db-backup           # Backup database
-bash nour.sh verify              # Health check
+bash norex.sh python              # Python CLI
+bash norex.sh php 8.3             # Switch PHP version
+bash norex.sh db-backup           # Backup database
+bash norex.sh verify              # Health check
 ```
 
 **All Commands**
 ```bash
-bash nour.sh help                # Full command list
+bash norex.sh help                # Full command list
 ```
 
 ---
 
-## 🆚 Why NourProject?
+## 🆚 Why NorexProject?
 
 ### vs Laragon
 ✅ Cross-platform • ✅ Docker isolation • ✅ Real-time GUI monitoring
@@ -216,6 +216,6 @@ cd /app/gui && bash run.sh
 
 ---
 
-*NourProject - Making PHP development powerful, modern, and enjoyable!*
+*NorexProject - Making PHP development powerful, modern, and enjoyable!*
 
 **Phase 3** ✨ *Refined & Production Ready*
