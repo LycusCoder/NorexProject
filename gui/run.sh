@@ -1,159 +1,185 @@
 #!/bin/bash
 
-# NorexProject - Tauri Launcher Script dengan Auto-Dependency Check
+# ========================================
+# NorexProject v3.0 - Smart Run Script
+# Electron Development Mode
+# ========================================
 
-set -e  # Exit on error
-
-# Warna untuk output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-echo -e "${BLUE}🚀 Meluncurkan GUI Desktop Tauri...${NC}"
+echo "🚀 NorexProject v3.0 - Starting Electron App..."
 echo ""
 
-# Pindah ke directory Tauri
-cd "$(dirname "$0")"
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
 
-# Function untuk menanyakan konfirmasi
-ask_confirmation() {
-    local prompt="$1"
-    while true; do
-        read -p "$(echo -e ${YELLOW}$prompt${NC}) [y/n]: " yn
-        case $yn in
-            [Yy]* ) return 0;;
-            [Nn]* ) return 1;;
-            * ) echo "Mohon jawab y (yes) atau n (no).";;
-        esac
-    done
-}
+echo "📁 Working directory: $SCRIPT_DIR"
+echo ""
 
-# ====================================
-# 1. CEK FRONTEND DEPENDENCIES (Node.js)
-# ====================================
-echo -e "${BLUE}📦 Mengecek frontend dependencies...${NC}"
+# ========================================
+# STEP 1: Check Node.js & Yarn
+# ========================================
+echo "🔍 Checking Node.js & Yarn..."
 
-NEED_NPM_INSTALL=false
+if ! command -v node &> /dev/null; then
+    echo "❌ Node.js is not installed!"
+    echo "   Please install Node.js from https://nodejs.org/"
+    exit 1
+fi
 
-# Cek apakah node_modules ada
+if ! command -v yarn &> /dev/null; then
+    echo "❌ Yarn is not installed!"
+    echo "   Installing Yarn globally..."
+    npm install -g yarn
+fi
+
+NODE_VERSION=$(node --version)
+YARN_VERSION=$(yarn --version)
+
+echo "✅ Node.js: $NODE_VERSION"
+echo "✅ Yarn: $YARN_VERSION"
+echo ""
+
+# ========================================
+# STEP 2: Check Dependencies
+# ========================================
+echo "🔍 Checking dependencies..."
+
+NEEDS_INSTALL=false
+
+# Check if node_modules exists
 if [ ! -d "node_modules" ]; then
-    echo -e "${YELLOW}⚠️  Folder node_modules tidak ditemukan${NC}"
-    NEED_NPM_INSTALL=true
+    echo "⚠️  node_modules not found!"
+    NEEDS_INSTALL=true
 fi
 
-# Cek apakah package.json lebih baru dari node_modules
-if [ -f "package.json" ] && [ -d "node_modules" ]; then
-    if [ "package.json" -nt "node_modules" ]; then
-        echo -e "${YELLOW}⚠️  package.json lebih baru dari node_modules${NC}"
-        NEED_NPM_INSTALL=true
+# Check if package.json has changed (compare with lock file timestamp)
+if [ -f "package.json" ] && [ -f "yarn.lock" ]; then
+    if [ "package.json" -nt "yarn.lock" ]; then
+        echo "⚠️  package.json has been modified!"
+        NEEDS_INSTALL=true
     fi
 fi
 
-# Cek apakah ada package yang belum terinstall
-if [ -d "node_modules" ]; then
-    MISSING_PACKAGES=$(npm ls 2>&1 | grep -c "UNMET DEPENDENCY" || true)
-    if [ "$MISSING_PACKAGES" -gt 0 ]; then
-        echo -e "${YELLOW}⚠️  Ada $MISSING_PACKAGES dependencies yang belum terinstall${NC}"
-        NEED_NPM_INSTALL=true
+# Check critical dependencies
+CRITICAL_DEPS=("electron" "react" "react-dom" "vite")
+for dep in "${CRITICAL_DEPS[@]}"; do
+    if [ ! -d "node_modules/$dep" ]; then
+        echo "⚠️  Missing critical dependency: $dep"
+        NEEDS_INSTALL=true
+        break
     fi
-fi
+done
 
-# Tanyakan untuk install jika diperlukan
-if [ "$NEED_NPM_INSTALL" = true ]; then
-    echo -e "${YELLOW}📋 Frontend dependencies perlu diinstall/update${NC}"
-    if ask_confirmation "Install/update frontend dependencies sekarang?"; then
-        echo -e "${GREEN}📥 Installing frontend dependencies...${NC}"
-        npm install
-        echo -e "${GREEN}✅ Frontend dependencies berhasil diinstall!${NC}"
+# ========================================
+# STEP 3: Install Dependencies if Needed
+# ========================================
+if [ "$NEEDS_INSTALL" = true ]; then
+    echo ""
+    echo "📦 Installing dependencies with Yarn..."
+    echo "⏳ This may take a few minutes. Please wait..."
+    echo ""
+    
+    # Run yarn install and wait for completion
+    yarn install
+    
+    INSTALL_EXIT_CODE=$?
+    
+    if [ $INSTALL_EXIT_CODE -ne 0 ]; then
         echo ""
-    else
-        echo -e "${RED}⚠️  Melewati instalasi. Aplikasi mungkin error jika dependencies tidak lengkap.${NC}"
-        echo ""
+        echo "❌ Yarn install failed with exit code $INSTALL_EXIT_CODE"
+        echo "   Please fix the errors and try again."
+        exit 1
     fi
+    
+    echo ""
+    echo "✅ Dependencies installed successfully!"
+    echo ""
+    
+    # Wait 2 seconds to ensure everything is settled
+    echo "⏳ Waiting for dependencies to settle..."
+    sleep 2
 else
-    echo -e "${GREEN}✅ Frontend dependencies sudah up-to-date${NC}"
+    echo "✅ All dependencies are up to date!"
     echo ""
 fi
 
-# ====================================
-# 2. CEK RUST/CARGO DEPENDENCIES
-# ====================================
-echo -e "${BLUE}🦀 Mengecek Rust dependencies...${NC}"
+# ========================================
+# STEP 4: Check Electron Binary
+# ========================================
+echo "🔍 Verifying Electron binary..."
 
-NEED_CARGO_BUILD=false
-
-# Cek apakah Cargo.lock lebih baru dari target/
-if [ -f "src-tauri/Cargo.toml" ]; then
-    if [ ! -d "src-tauri/target" ]; then
-        echo -e "${YELLOW}⚠️  Folder target/ tidak ditemukan (first build)${NC}"
-        NEED_CARGO_BUILD=true
-    elif [ "src-tauri/Cargo.toml" -nt "src-tauri/target" ]; then
-        echo -e "${YELLOW}⚠️  Cargo.toml lebih baru dari build terakhir${NC}"
-        NEED_CARGO_BUILD=true
-    fi
+if [ ! -f "node_modules/.bin/electron" ]; then
+    echo "❌ Electron binary not found!"
+    echo "   Reinstalling Electron..."
+    yarn add electron --dev
+    sleep 2
 fi
 
-# Info untuk Cargo (biasanya auto-handled oleh tauri dev)
-if [ "$NEED_CARGO_BUILD" = true ]; then
-    echo -e "${YELLOW}📋 Rust dependencies akan di-compile saat tauri dev berjalan${NC}"
-    echo -e "${BLUE}ℹ️  Proses compile pertama kali bisa memakan waktu 5-10 menit${NC}"
-    if ! ask_confirmation "Lanjutkan?"; then
-        echo -e "${RED}❌ Dibatalkan oleh user${NC}"
-        exit 0
-    fi
-    echo ""
-else
-    echo -e "${GREEN}✅ Rust dependencies sudah di-compile${NC}"
-    echo ""
-fi
-
-# ====================================
-# 3. CEK SYSTEM DEPENDENCIES (Linux)
-# ====================================
-if [ "$(uname)" = "Linux" ]; then
-    echo -e "${BLUE}🐧 Mengecek system dependencies (Linux)...${NC}"
-    
-    MISSING_DEPS=()
-    
-    # Cek apakah pkg-config ada
-    if ! command -v pkg-config &> /dev/null; then
-        MISSING_DEPS+=("pkg-config")
-    fi
-    
-    # Cek WebKit2GTK
-    if ! pkg-config --exists webkit2gtk-4.1 2>/dev/null && ! pkg-config --exists webkit2gtk-4.0 2>/dev/null; then
-        MISSING_DEPS+=("libwebkit2gtk")
-    fi
-    
-    # Cek build-essential
-    if ! command -v gcc &> /dev/null; then
-        MISSING_DEPS+=("build-essential")
-    fi
-    
-    if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
-        echo -e "${RED}⚠️  System dependencies yang hilang: ${MISSING_DEPS[*]}${NC}"
-        echo -e "${YELLOW}Untuk menginstall, jalankan:${NC}"
-        echo -e "${GREEN}sudo apt update && sudo apt install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev${NC}"
-        echo ""
-        if ! ask_confirmation "Lanjutkan tanpa dependencies ini? (kemungkinan akan error)"; then
-            echo -e "${RED}❌ Dibatalkan. Install system dependencies terlebih dahulu.${NC}"
-            exit 1
-        fi
-    else
-        echo -e "${GREEN}✅ System dependencies sudah terpenuhi${NC}"
-    fi
-    echo ""
-fi
-
-# ====================================
-# 4. JALANKAN TAURI DEV
-# ====================================
-echo -e "${GREEN}🎯 Memulai Tauri development server...${NC}"
-echo -e "${BLUE}ℹ️  Tekan Ctrl+C untuk menghentikan${NC}"
+echo "✅ Electron is ready!"
 echo ""
-echo "=========================================="
 
-# Jalankan tauri dev
-npm run tauri:dev
+# ========================================
+# STEP 5: Start Vite Dev Server
+# ========================================
+echo "🌐 Starting Vite dev server..."
+echo ""
+
+# Start Vite in background
+yarn dev:vite > /tmp/norex-vite.log 2>&1 &
+VITE_PID=$!
+
+echo "✅ Vite dev server started (PID: $VITE_PID)"
+echo "⏳ Waiting for Vite to be ready..."
+
+# Wait for Vite to be ready (check if port 5173 is open)
+MAX_WAIT=30
+COUNTER=0
+while ! nc -z localhost 5173 2>/dev/null && ! curl -s http://localhost:5173 > /dev/null 2>&1; do
+    sleep 1
+    COUNTER=$((COUNTER + 1))
+    echo "   ... waiting ($COUNTER/$MAX_WAIT)"
+    
+    if [ $COUNTER -ge $MAX_WAIT ]; then
+        echo "❌ Vite dev server failed to start within $MAX_WAIT seconds!"
+        echo "   Check logs: tail -f /tmp/norex-vite.log"
+        kill $VITE_PID 2>/dev/null
+        exit 1
+    fi
+done
+
+echo "✅ Vite dev server is ready!"
+echo ""
+
+# Give Vite extra 2 seconds to fully initialize
+echo "⏳ Waiting for Vite to fully initialize..."
+sleep 2
+
+# ========================================
+# STEP 6: Launch Electron
+# ========================================
+echo "🎯 Launching Electron application..."
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  NorexProject v3.0 is now running!"
+echo "  Press Ctrl+C to stop the application"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+# Launch Electron (this will block until app closes)
+NODE_ENV=development yarn electron .
+
+# ========================================
+# STEP 7: Cleanup on Exit
+# ========================================
+echo ""
+echo "🛑 Shutting down..."
+
+# Kill Vite dev server
+if ps -p $VITE_PID > /dev/null 2>&1; then
+    echo "   Stopping Vite dev server (PID: $VITE_PID)..."
+    kill $VITE_PID 2>/dev/null
+    sleep 1
+fi
+
+echo "✅ Cleanup complete!"
+echo "👋 Goodbye!"

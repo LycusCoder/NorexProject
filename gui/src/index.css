@@ -58,7 +58,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* FIXED: No scroll */
   /* Disable default browser context menu */
   -webkit-user-select: none;
   user-select: none;
@@ -67,6 +67,8 @@ body {
 #root {
   width: 100%;
   height: 100vh;
+  overflow: hidden; /* FIXED: No scroll */
+  position: relative; /* Ensure proper stacking context */
 }
 
 /* Disable right-click context menu globally */
@@ -74,10 +76,10 @@ body, #root, * {
   -webkit-context-menu: none;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - HIDDEN for main app, visible only in scrollable sections */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -85,12 +87,12 @@ body, #root, * {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Allow text selection for input fields */

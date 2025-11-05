@@ -2,26 +2,21 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// Vite config for Electron
-// https://vite.dev/config/
+// Vite config for Web (standalone)
+// Use this if you want to deploy as web app
 export default defineConfig({
   plugins: [react()],
   
-  base: './',
+  base: '/',
   
   server: {
-    port: 5173,
-    strictPort: true,
+    port: 3000,
+    host: true,
   },
   
   build: {
-    outDir: 'dist',
+    outDir: 'dist-web',
     emptyOutDir: true,
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html')
-      }
-    }
   },
   
   resolve: {
@@ -29,7 +24,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
-  
-  // Prevent vite from obscuring errors
-  clearScreen: false,
 })
