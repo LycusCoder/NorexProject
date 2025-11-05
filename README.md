@@ -58,6 +58,11 @@ bash norex.sh help    # See all commands
 - 🏗️ [Architecture](docs/technical/ARCHITECTURE.md) - System design
 - 📋 [Changelog](docs/technical/CHANGELOG.md) - Version history
 
+### Phase Guides
+- 📌 [Phase 3 Complete](docs/guides/PHASE_3_COMPLETE.md) - GUI & Docker
+- 🔧 [Option A Implementation](docs/guides/OPTION_A_IMPLEMENTATION.md) - PROJECT_ROOT system
+- 🎯 [Phase 4 Planning](docs/guides/PHASE_4_SETTINGS_MODAL_PLANNING.md) - Settings Modal (upcoming)
+
 ---
 
 ## 🌟 Key Features
@@ -179,12 +184,18 @@ bash norex.sh help                # Full command list
 
 ## 📝 Version
 
-**Current**: v3.0.0 (Phase 3 Complete)
+**Current**: v3.6.0 (Phase 3.6 Complete)
+- Binary-based runtime system (no Docker dependency)
+- Auto-download binary management
+- Dynamic service loading
+- PROJECT_ROOT path system
+- Enhanced error handling
+- Phase 4 Settings Modal in planning
+
+**Previous**: v3.0.0 (Phase 3)
 - Context menu quick actions
 - Python CLI integration
 - Modern refined UI/UX
-- System tray support
-- Enhanced developer tools
 
 [See full changelog](docs/technical/CHANGELOG.md)
 

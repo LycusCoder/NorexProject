@@ -48,11 +48,26 @@ const App: React.FC = () => {
   // Check services status dynamically
   const checkServicesStatus = async () => {
     try {
-      const result = await window.electron.executeBashScript('bash scripts/status_services.sh');
+      const result = await window.electron.executeBashScript('/bin/bash scripts/status_services.sh');
+      
+      // Handle error responses (JSON format)
+      let statusOutput = result;
+      try {
+        const parsed = JSON.parse(result);
+        if (parsed.error) {
+          // Service check failed, all services stopped
+          setServices(services.map(s => ({ ...s, status: 'stopped', icon: '─' })));
+          setServicesStatus('stopped');
+          return;
+        }
+      } catch (e) {
+        // Not JSON, continue with normal parsing
+      }
       
       // Parse status from output
       const updatedServices = services.map(service => {
-        const isRunning = result.includes(`${service.name}`) && result.includes('running');
+        const isRunning = statusOutput.includes(`${service.name}`) && 
+                         (statusOutput.includes('running') || statusOutput.includes('✅'));
         return {
           ...service,
           status: isRunning ? 'running' as const : 'stopped' as const,
@@ -75,6 +90,9 @@ const App: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to check services status:', error);
+      // On error, assume all services stopped
+      setServices(services.map(s => ({ ...s, status: 'stopped', icon: '─' })));
+      setServicesStatus('stopped');
     }
   };
 
@@ -106,11 +124,12 @@ const App: React.FC = () => {
   const handleStartServices = async () => {
     setServicesStatus('starting');
     try {
-      await window.electron.executeBashScript('bash scripts/start_services.sh');
+      await window.electron.executeBashScript('/bin/bash scripts/start_services.sh');
       setTimeout(checkServicesStatus, 2000); // Check status after 2s
       console.log('Services started successfully');
     } catch (error) {
       console.error('Failed to start services:', error);
+      alert('Failed to start services. Check logs for details.');
       setServicesStatus('stopped');
     }
   };
@@ -118,11 +137,12 @@ const App: React.FC = () => {
   const handleStopServices = async () => {
     setServicesStatus('stopping');
     try {
-      await window.electron.executeBashScript('bash scripts/stop_services.sh');
+      await window.electron.executeBashScript('/bin/bash scripts/stop_services.sh');
       setTimeout(checkServicesStatus, 1000); // Check status after 1s
       console.log('Services stopped successfully');
     } catch (error) {
       console.error('Failed to stop services:', error);
+      alert('Failed to stop services. Check logs for details.');
       setServicesStatus('running');
     }
   };

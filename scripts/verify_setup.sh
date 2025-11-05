@@ -57,8 +57,8 @@ declare -A BINARIES=(
 )
 
 declare -A DOWNLOAD_URLS=(
-    ["apache"]="https://downloads.apache.org/httpd/httpd-2.4.62.tar.gz"
-    ["mysql"]="https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-8.4.3-linux-glibc2.28-x86_64.tar.gz"
+    ["apache"]="https://archive.apache.org/dist/httpd/httpd-2.4.62.tar.gz"
+    ["mysql"]="https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-8.4.3-linux-glibc2.28-x86_64.tar.xz"
     ["php"]="https://www.php.net/distributions/php-8.3.26.tar.gz"
     ["phpmyadmin"]="https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.tar.gz"
 )

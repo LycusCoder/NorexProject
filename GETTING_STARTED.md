@@ -1,49 +1,74 @@
-# 🚀 Getting Started with NorexProject
+# 🚀 Getting Started with NorexProject V3.6
 
-**Quick start guide untuk memulai NorexProject dari awal sampai running!**
+**Quick start guide untuk memulai NOREX V3.6 Binary-based runtime!**
 
 ---
 
 ## 📋 Prasyarat
 
-Pastikan sudah terinstall:
-- ✅ **Docker** (dan sedang running)
-- ✅ **Python 3** (optional, untuk GUI)
+Minimal requirements:
+- ✅ **Linux** (Ubuntu, Debian, CentOS, etc.)
+- ✅ **2GB RAM** minimum
+- ✅ **500MB disk space** untuk binaries
+- ⚠️ **No Docker needed!** (Binary-based system)
+
+Optional:
+- ✅ **Node.js & Yarn** (untuk GUI development)
 
 ---
 
 ## 🎯 3 Langkah Mudah
 
-### Step 1: Setup (Pertama Kali Saja)
+### Step 1: Setup & Download Binaries (Pertama Kali Saja)
 
 ```bash
 cd /app
-bash norex.sh setup
+bash scripts/verify_setup.sh
 ```
 
 **Apa yang dilakukan:**
-- ✅ Check semua requirement (Docker, Python)
-- ✅ Install GUI dependencies (PySide6, psutil)
-- ✅ Build Docker images
-- ✅ Setup directories
-- ✅ Set permissions
+- ✅ Check binary requirements
+- ✅ Auto-download Apache 2.4.62 (~12MB)
+- ✅ Auto-download MySQL 8.4.3 (~64MB)
+- ✅ Auto-download PHP 8.3.26 (~20MB)
+- ✅ Auto-download phpMyAdmin 5.2.1 (~12MB)
+- ✅ Extract semua binaries ke `/app/bin/`
 
-**Output:** "Setup Complete!" ✅
+**Output:** "Setup Verification Complete" ✅
+
+**⏱️ Estimasi waktu:** 5-10 menit (tergantung koneksi internet)
 
 ---
 
 ### Step 2: Start Services
 
 ```bash
-bash norex.sh start
+cd /app
+bash scripts/start_services.sh
 ```
 
 **Apa yang dilakukan:**
-- ✅ Start Apache web server
-- ✅ Start MySQL database
-- ✅ Start phpMyAdmin
+- ✅ Start MySQL database (port 3306)
+- ✅ Start Apache web server (port 8080)
+- ✅ Start phpMyAdmin (via Apache)
+- ✅ Initialize data directories
+- ✅ Configure services
 
-**Output:** Services running! 🚀
+**Output:**
+```
+═══════════════════════════════════
+  ✅ Norex Services Running!
+═══════════════════════════════════
+
+🌍 http://localhost:8080
+🛠 phpMyAdmin → http://localhost:8080/phpmyadmin
+
+MySQL user: root
+Password: 041201
+
+Stop: bash scripts/stop_services.sh
+Status: bash scripts/status_services.sh
+```
 
 ---
 

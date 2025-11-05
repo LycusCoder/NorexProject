@@ -65,6 +65,19 @@ if [[ "$ARCHIVE_PATH" == *.tar.gz ]] || [[ "$ARCHIVE_PATH" == *.tgz ]]; then
         log_msg "❌ Extraction failed"
         exit 1
     fi
+
+elif [[ "$ARCHIVE_PATH" == *.tar.xz ]] || [[ "$ARCHIVE_PATH" == *.txz ]]; then
+    echo -e "${BLUE}📦 Extracting tar.xz archive...${NC}"
+    log_msg "📦 Extracting tar.xz"
+    
+    if tar -xJf "$ARCHIVE_PATH" -C "$EXTRACT_TO" --strip-components=0 2>&1 | tee -a "$LOG_FILE"; then
+        echo -e "${GREEN}✅ Extraction completed${NC}"
+        log_msg "✅ Extraction successful"
+    else
+        echo -e "${RED}❌ Extraction failed${NC}"
+        log_msg "❌ Extraction failed"
+        exit 1
+    fi
     
 elif [[ "$ARCHIVE_PATH" == *.zip ]]; then
     echo -e "${BLUE}📦 Extracting zip archive...${NC}"
@@ -81,6 +94,7 @@ elif [[ "$ARCHIVE_PATH" == *.zip ]]; then
     
 else
     echo -e "${RED}❌ Unsupported archive format: $ARCHIVE_PATH${NC}"
+    echo -e "${YELLOW}💡 Supported formats: .tar.gz, .tar.xz, .zip${NC}"
     log_msg "❌ Unsupported format"
     exit 1
 fi

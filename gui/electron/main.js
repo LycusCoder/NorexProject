@@ -99,6 +99,12 @@ ipcMain.handle('execute_bash_script', async (event, { command }) => {
     const projectRoot = getProjectRoot();
     const logsDir = path.join(projectRoot, 'logs');
     
+    // Set PROJECT_ROOT environment variable
+    const env = {
+      ...process.env,
+      PROJECT_ROOT: projectRoot
+    };
+    
     // Create logs directory if not exists
     if (!fs.existsSync(logsDir)) {
       fs.mkdirSync(logsDir, { recursive: true });
@@ -108,13 +114,13 @@ ipcMain.handle('execute_bash_script', async (event, { command }) => {
     let logFilename = 'gui_commands.log';
     let actionMessage = '';
     
-    if (command.includes('start.sh')) {
+    if (command.includes('start_services.sh')) {
       logFilename = 'start_services.log';
       actionMessage = '🚀 Service dijalankan';
-    } else if (command.includes('stop.sh')) {
-      logFilename = 'start_services.log';
+    } else if (command.includes('stop_services.sh')) {
+      logFilename = 'stop_services.log';
       actionMessage = '🛑 Service sedang dihentikan';
-    } else if (command.includes('status.sh')) {
+    } else if (command.includes('status_services.sh')) {
       logFilename = 'gui_status.log';
     } else if (command.includes('docker start')) {
       logFilename = 'gui_docker_start.log';
@@ -143,8 +149,8 @@ ipcMain.handle('execute_bash_script', async (event, { command }) => {
     
     fs.appendFileSync(logFilePath, logEntry + logCommand);
     
-    // Execute command
-    exec(command, { cwd: projectRoot }, (error, stdout, stderr) => {
+    // Execute command with PROJECT_ROOT env
+    exec(command, { cwd: projectRoot, env: env }, (error, stdout, stderr) => {
       const finishTimestamp = new Date().toLocaleString('id-ID', { 
         year: 'numeric', 
         month: '2-digit', 
@@ -169,7 +175,21 @@ ipcMain.handle('execute_bash_script', async (event, { command }) => {
         if (stderr) {
           fs.appendFileSync(logFilePath, `[${finishTimestamp}] ERROR:\n${stderr}\n`);
         }
-        reject(`Command failed (exit code ${error.code}):\n${stderr}`);
+        
+        // Return error info instead of rejecting - keep GUI responsive
+        const errorInfo = {
+          error: true,
+          exitCode: error.code,
+          stderr: stderr || '',
+          stdout: stdout || ''
+        };
+        
+        // For status checks, resolve with error info instead of reject
+        if (command.includes('status')) {
+          resolve(JSON.stringify(errorInfo));
+        } else {
+          reject(`Command failed (exit code ${error.code}):\n${stderr}`);
+        }
       } else {
         const successMsg = actionMessage.includes('dijalankan')
           ? `[${finishTimestamp}] ✅ Service berhasil dijalankan!\n`
@@ -284,5 +304,15 @@ ipcMain.handle('open-url', async (event, url) => {
   await shell.openExternal(url);
 });
 
+const projectRoot = getProjectRoot();
 console.log('✅ Electron main process ready!');
-console.log('📁 Project root:', getProjectRoot());
+console.log('📁 Project root:', projectRoot);
+console.log('📁 Scripts dir:', require('path').join(projectRoot, 'scripts'));
+
+// Verify critical paths on startup
+const scriptsDir = require('path').join(projectRoot, 'scripts');
+if (!require('fs').existsSync(scriptsDir)) {
+  console.error('❌ ERROR: Scripts directory not found at:', scriptsDir);
+} else {
+  console.log('✅ Scripts directory verified');
+}
