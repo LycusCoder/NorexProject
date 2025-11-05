@@ -1,0 +1,87 @@
+# NOREX V3.6 - Service Configurations
+# Service management & runtime settings
+
+version: "3.6.0"
+
+services:
+  mysql:
+    name: "MySQL"
+    display_name: "MySQL Server"
+    version: "8.4.3"
+    port: "3306"
+    binary_path: "bin/mysql/mysql-8.4.3-linux-glibc2.28-x86_64/bin/mysqld"
+    config_path: "bin/mysql/mysql-8.4.3-linux-glibc2.28-x86_64/my.cnf"
+    data_path: "bin/mysql/mysql-8.4.3-linux-glibc2.28-x86_64/data"
+    pid_file: "bin/mysql/mysql.pid"
+    socket_file: "bin/mysql/mysql.sock"
+    enabled: true
+    autostart: true
+    startup_priority: 1  # Start first
+    dependencies: []
+    credentials:
+      user: "root"
+      password: "041201"
+    
+  apache:
+    name: "Apache"
+    display_name: "Apache HTTP Server"
+    version: "2.4.62"
+    port: "8080"
+    port_ssl: "8443"
+    binary_path: "bin/apache/httpd-2.4.62/bin/httpd"
+    config_path: "bin/apache/httpd-2.4.62/conf/httpd.conf"
+    pid_file: "bin/apache/httpd.pid"
+    document_root: "www"
+    enabled: true
+    autostart: true
+    startup_priority: 2  # Start after MySQL
+    dependencies: ["mysql"]
+    modules:
+      - "mod_rewrite"
+      - "mod_php"
+      - "mod_proxy"
+      - "mod_proxy_http"
+    
+  phpmyadmin:
+    name: "phpMyAdmin"
+    display_name: "phpMyAdmin"
+    version: "5.2.1"
+    port: "8081"  # Via Apache reverse proxy
+    path: "bin/phpmyadmin/phpMyAdmin-5.2.1-all-languages"
+    config_path: "bin/phpmyadmin/phpMyAdmin-5.2.1-all-languages/config.inc.php"
+    enabled: true
+    autostart: true
+    startup_priority: 3  # Start after Apache
+    dependencies: ["apache", "mysql"]
+    apache_alias: "/phpmyadmin"
+    blowfish_secret: "norex_phpmyadmin_secret_key_2025"
+    
+  php:
+    name: "PHP"
+    display_name: "PHP Runtime"
+    version: "8.3.26"
+    binary_path: "bin/php/php-8.3.26/bin/php"
+    config_path: "bin/php/php-8.3.26/lib/php.ini"
+    enabled: true
+    extensions:
+      - "mysqli"
+      - "pdo_mysql"
+      - "mbstring"
+      - "curl"
+      - "gd"
+      - "zip"
+
+# Global runtime settings
+runtime:
+  mode: "binary"  # binary | docker
+  log_dir: "logs"
+  pid_dir: "bin/.pids"
+  stop_timeout: 30  # seconds
+  startup_delay: 2  # seconds between services
+  
+# Port management
+ports:
+  check_availability: true
+  auto_assign: false  # jika port conflict
+  range_start: 8082
+  range_end: 8099

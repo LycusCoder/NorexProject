@@ -1,4 +1,4 @@
-// NorexProject v3.0 - Dashboard Interface
+// NorexProject v3.6 - Dashboard Interface (Binary-based Runtime)
 import React, { useState, useEffect } from 'react';
 import { Minimize, X, Settings, Zap, RotateCw, Power, Terminal, Database, Globe, ChevronDown } from 'lucide-react';
 
@@ -6,24 +6,30 @@ interface Service {
   name: string;
   version: string;
   port: string;
-  status: 'running' | 'stopped' | 'locked';
+  status: 'running' | 'stopped';
   icon: string;
 }
 
 const App: React.FC = () => {
   const [services, setServices] = useState<Service[]>([
-    { name: 'Apache', version: '2.4.62', port: '80/443', status: 'running', icon: '✔' },
-    { name: 'MySQL', version: '8.4.3', port: '3306', status: 'running', icon: '✔' },
-    { name: 'Redis', version: '5.0.14.1', port: '6379', status: 'running', icon: '✔' },
-    { name: 'Nginx', version: '1.22.0', port: '8080/8443', status: 'locked', icon: '🔒' },
-    { name: 'PostgreSQL', version: '15.10', port: '5432', status: 'stopped', icon: '─' },
-    { name: 'Memcached', version: '1.6.8', port: '11211', status: 'stopped', icon: '─' },
+    { name: 'Apache', version: '2.4.62', port: '8080', status: 'stopped', icon: '✔' },
+    { name: 'MySQL', version: '8.4.3', port: '3306', status: 'stopped', icon: '✔' },
+    { name: 'phpMyAdmin', version: '5.2.1', port: '8080/phpmyadmin', status: 'stopped', icon: '✔' },
   ]);
 
+  const [servicesStatus, setServicesStatus] = useState<'stopped' | 'starting' | 'running' | 'stopping'>('stopped');
   const [activeTime, setActiveTime] = useState('00:00:00');
   const [ipAddress] = useState('192.168.1.141');
-  const [projectRoot] = useState('/app/www/myproject');
-  const [projectDomain] = useState('myproject.local');
+  const [projectRoot] = useState('/app/www');
+  const [projectDomain] = useState('localhost:8080');
+  const [showOnlyRunning, setShowOnlyRunning] = useState(true);
+
+  // Check services status on mount
+  useEffect(() => {
+    checkServicesStatus();
+    const interval = setInterval(checkServicesStatus, 5000); // Check every 5s
+    return () => clearInterval(interval);
+  }, []);
 
   // Active time counter
   useEffect(() => {
@@ -38,6 +44,39 @@ const App: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  // Check services status dynamically
+  const checkServicesStatus = async () => {
+    try {
+      const result = await window.electron.executeBashScript('bash scripts/status_services.sh');
+      
+      // Parse status from output
+      const updatedServices = services.map(service => {
+        const isRunning = result.includes(`${service.name}`) && result.includes('running');
+        return {
+          ...service,
+          status: isRunning ? 'running' as const : 'stopped' as const,
+          icon: isRunning ? '✔' : '─'
+        };
+      });
+      
+      setServices(updatedServices);
+      
+      // Update overall status
+      const anyRunning = updatedServices.some(s => s.status === 'running');
+      const allRunning = updatedServices.every(s => s.status === 'running');
+      
+      if (allRunning) {
+        setServicesStatus('running');
+      } else if (anyRunning) {
+        setServicesStatus('running'); // Partial running
+      } else {
+        setServicesStatus('stopped');
+      }
+    } catch (error) {
+      console.error('Failed to check services status:', error);
+    }
+  };
 
   const handleMinimize = () => {
     window.electron.minimize();
@@ -64,10 +103,34 @@ const App: React.FC = () => {
     console.log('Opening terminal...');
   };
 
+  const handleStartServices = async () => {
+    setServicesStatus('starting');
+    try {
+      await window.electron.executeBashScript('bash scripts/start_services.sh');
+      setTimeout(checkServicesStatus, 2000); // Check status after 2s
+      console.log('Services started successfully');
+    } catch (error) {
+      console.error('Failed to start services:', error);
+      setServicesStatus('stopped');
+    }
+  };
+
+  const handleStopServices = async () => {
+    setServicesStatus('stopping');
+    try {
+      await window.electron.executeBashScript('bash scripts/stop_services.sh');
+      setTimeout(checkServicesStatus, 1000); // Check status after 1s
+      console.log('Services stopped successfully');
+    } catch (error) {
+      console.error('Failed to stop services:', error);
+      setServicesStatus('running');
+    }
+  };
+
   return (
-    <div className="w-full h-screen overflow-hidden" style={{ backgroundColor: '#0F1117' }}>
+    <div className="w-full h-screen overflow-hidden" style={{ backgroundColor: '#0F1117', borderRadius: '12px' }}>
       {/* Main Window Container - Premium Dark */}
-      <div className="w-full h-full flex flex-col text-gray-100 overflow-hidden" style={{ backgroundColor: '#161920' }}>
+      <div className="w-full h-full flex flex-col text-gray-100 overflow-hidden" style={{ backgroundColor: '#161920', borderRadius: '12px' }}>
         
         {/* Custom Title Bar with Logo and Settings */}
         <div 
@@ -75,7 +138,8 @@ const App: React.FC = () => {
           style={{ 
             WebkitAppRegion: 'drag',
             backgroundColor: '#0F1117',
-            borderBottomColor: 'rgba(255,255,255,0.05)'
+            borderBottomColor: 'rgba(255,255,255,0.05)',
+            borderRadius: '12px 12px 0 0'
           } as any}
         >
           <div className="flex items-center space-x-3 pointer-events-none">
@@ -85,7 +149,7 @@ const App: React.FC = () => {
               <Zap className="h-5 w-5 text-white" />
             </div>
             <h1 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>
-              Norex
+              Norex v3.6
             </h1>
           </div>
           
@@ -128,22 +192,32 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Services Overview Section - SCROLLABLE */}
-        <div className="px-4 py-3 border-b flex-1 overflow-y-auto" style={{ borderBottomColor: 'rgba(255,255,255,0.05)' }}>
-          <div className="flex items-center justify-between mb-3">
+        {/* Services Overview Section - FIXED HEADER, SCROLLABLE LIST */}
+        <div className="px-4 py-3 border-b flex flex-col flex-1 overflow-hidden" style={{ borderBottomColor: 'rgba(255,255,255,0.05)' }}>
+          <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <h2 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>Services Overview</h2>
-            <ChevronDown className="w-4 h-4" style={{ color: '#A8AEBF' }} />
+            <button 
+              onClick={() => setShowOnlyRunning(!showOnlyRunning)}
+              className="text-xs px-2 py-1 rounded transition-all"
+              style={{ 
+                backgroundColor: showOnlyRunning ? '#6A5AEC' : '#1B1F28',
+                color: showOnlyRunning ? '#FFFFFF' : '#A8AEBF'
+              }}
+            >
+              {showOnlyRunning ? 'Running Only' : 'Show All'}
+            </button>
           </div>
           
-          <div className="space-y-2">
-            {services.map((service, index) => (
+          <div className="space-y-2 overflow-y-auto flex-1">
+            {services.filter(s => !showOnlyRunning || s.status === 'running').map((service, index) => (
               <div 
                 key={index}
-                className="flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-150 border"
+                className="flex items-center justify-between px-3 py-2 transition-all duration-150 border"
                 style={{
                   backgroundColor: '#0F1117',
                   borderColor: 'rgba(255,255,255,0.05)',
-                  opacity: service.status === 'stopped' ? 0.55 : 1
+                  opacity: service.status === 'stopped' ? 0.55 : 1,
+                  borderRadius: '12px'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1B1F28'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0F1117'}
@@ -161,92 +235,26 @@ const App: React.FC = () => {
                 </div>
                 
                 <div className="flex items-center space-x-2 ml-4">
-                  {service.status === 'running' && (
-                    <>
-                      <button 
-                        onClick={() => handleServiceAction(service.name, 'reload')}
-                        className="px-3 py-1 text-xs rounded transition-all duration-150"
-                        style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A93D6'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4BA3E6'}
-                      >
-                        Reload
-                      </button>
-                      <button 
-                        onClick={() => handleServiceAction(service.name, 'stop')}
-                        className="px-3 py-1 text-xs rounded transition-all duration-150"
-                        style={{ backgroundColor: '#D95757', color: '#FFFFFF' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C94747'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D95757'}
-                      >
-                        Stop
-                      </button>
-                    </>
-                  )}
-                  {service.status === 'stopped' && (
-                    <button 
-                      onClick={() => handleServiceAction(service.name, 'start')}
-                      className="px-3 py-1 text-xs rounded transition-all duration-150"
-                      style={{ backgroundColor: '#3FBF75', color: '#FFFFFF' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2FAF65'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3FBF75'}
-                    >
-                      Start
-                    </button>
-                  )}
-                  {service.status === 'locked' && (
-                    <>
-                      <button 
-                        onClick={() => handleServiceAction(service.name, 'reload')}
-                        className="px-3 py-1 text-xs rounded transition-all duration-150"
-                        style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A93D6'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4BA3E6'}
-                      >
-                        Reload
-                      </button>
-                      <button 
-                        onClick={() => handleServiceAction(service.name, 'stop')}
-                        className="px-3 py-1 text-xs rounded transition-all duration-150"
-                        style={{ backgroundColor: '#D95757', color: '#FFFFFF' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C94747'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D95757'}
-                      >
-                        Stop
-                      </button>
-                    </>
-                  )}
-                  {service.name === 'MySQL' && (
+                  {service.name === 'MySQL' && service.status === 'running' && (
                     <button 
                       onClick={() => handleServiceAction(service.name, 'cli')}
-                      className="px-3 py-1 text-xs rounded transition-all duration-150"
-                      style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF' }}
+                      className="px-3 py-1 text-xs transition-all duration-150"
+                      style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF', borderRadius: '8px' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5A4ADC'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6A5AEC'}
                     >
                       Open CLI
                     </button>
                   )}
-                  {service.name === 'Redis' && (
+                  {(service.name === 'Apache' || service.name === 'MySQL') && service.status === 'running' && (
                     <button 
-                      onClick={() => handleServiceAction(service.name, 'monitor')}
-                      className="px-3 py-1 text-xs rounded transition-all duration-150"
-                      style={{ backgroundColor: '#E89B4B', color: '#FFFFFF' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D88B3B'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#E89B4B'}
+                      onClick={() => handleServiceAction(service.name, 'reload')}
+                      className="px-3 py-1 text-xs transition-all duration-150"
+                      style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF', borderRadius: '8px' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A93D6'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4BA3E6'}
                     >
-                      Monitor
-                    </button>
-                  )}
-                  {service.name === 'PostgreSQL' && (
-                    <button 
-                      onClick={() => handleServiceAction(service.name, 'restart')}
-                      className="px-3 py-1 text-xs rounded transition-all duration-150"
-                      style={{ backgroundColor: '#4A5568', color: '#FFFFFF' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A4558'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4A5568'}
-                    >
-                      Restart
+                      Reload
                     </button>
                   )}
                 </div>
@@ -258,9 +266,10 @@ const App: React.FC = () => {
         {/* Current Project Section */}
         <div className="px-4 py-3 border-b flex-shrink-0" style={{ borderBottomColor: 'rgba(255,255,255,0.05)' }}>
           <h2 className="text-sm font-semibold mb-3" style={{ color: '#E9ECF2' }}>Current Project</h2>
-          <div className="rounded-lg px-3 py-2 space-y-1 border" style={{ 
+          <div className="px-3 py-2 space-y-1 border" style={{ 
             backgroundColor: '#0F1117',
-            borderColor: 'rgba(255,255,255,0.05)'
+            borderColor: 'rgba(255,255,255,0.05)',
+            borderRadius: '12px'
           }}>
             <div className="flex items-center text-xs">
               <span style={{ color: '#A8AEBF' }} className="w-28">Project Root:</span>
@@ -273,30 +282,94 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center space-x-2 mt-3">
+            {servicesStatus === 'stopped' && (
+              <button 
+                onClick={handleStartServices}
+                className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
+                style={{ backgroundColor: '#3FBF75', color: '#FFFFFF', borderRadius: '10px' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2FAF65'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3FBF75'}
+              >
+                <Power className="w-4 h-4" />
+                <span>Start Services</span>
+              </button>
+            )}
+            
+            {servicesStatus === 'starting' && (
+              <button 
+                disabled
+                className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs"
+                style={{ backgroundColor: '#4A5568', color: '#FFFFFF', borderRadius: '10px', opacity: 0.7, cursor: 'not-allowed' }}
+              >
+                <RotateCw className="w-4 h-4 animate-spin" />
+                <span>Starting...</span>
+              </button>
+            )}
+            
+            {servicesStatus === 'running' && (
+              <button 
+                onClick={handleStopServices}
+                className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
+                style={{ backgroundColor: '#D95757', color: '#FFFFFF', borderRadius: '10px' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C94747'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D95757'}
+              >
+                <Power className="w-4 h-4" />
+                <span>Stop Services</span>
+              </button>
+            )}
+            
+            {servicesStatus === 'stopping' && (
+              <button 
+                disabled
+                className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs"
+                style={{ backgroundColor: '#4A5568', color: '#FFFFFF', borderRadius: '10px', opacity: 0.7, cursor: 'not-allowed' }}
+              >
+                <RotateCw className="w-4 h-4 animate-spin" />
+                <span>Stopping...</span>
+              </button>
+            )}
+            
             <button 
               onClick={handleOpenBrowser}
-              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs rounded-lg transition-all duration-150"
-              style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A93D6'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4BA3E6'}
+              disabled={servicesStatus !== 'running'}
+              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
+              style={{ 
+                backgroundColor: servicesStatus === 'running' ? '#4BA3E6' : '#4A5568', 
+                color: '#FFFFFF', 
+                borderRadius: '10px',
+                opacity: servicesStatus === 'running' ? 1 : 0.5,
+                cursor: servicesStatus === 'running' ? 'pointer' : 'not-allowed'
+              }}
+              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#3A93D6')}
+              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#4BA3E6')}
             >
               <Globe className="w-4 h-4" />
               <span>Open in Browser</span>
             </button>
+            
             <button 
               onClick={handleOpenDatabase}
-              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs rounded-lg transition-all duration-150"
-              style={{ backgroundColor: '#3FBF75', color: '#FFFFFF' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2FAF65'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3FBF75'}
+              disabled={servicesStatus !== 'running'}
+              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
+              style={{ 
+                backgroundColor: servicesStatus === 'running' ? '#E89B4B' : '#4A5568', 
+                color: '#FFFFFF', 
+                borderRadius: '10px',
+                opacity: servicesStatus === 'running' ? 1 : 0.5,
+                cursor: servicesStatus === 'running' ? 'pointer' : 'not-allowed'
+              }}
+              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#D88B3B')}
+              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#E89B4B')}
             >
               <Database className="w-4 h-4" />
-              <span>Open Database Panel</span>
+              <span>Database Panel</span>
             </button>
+            
             <button 
               onClick={handleOpenTerminal}
-              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs rounded-lg transition-all duration-150"
-              style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF' }}
+              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
+              style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF', borderRadius: '10px' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5A4ADC'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6A5AEC'}
             >

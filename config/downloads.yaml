@@ -1,0 +1,64 @@
+# NOREX V3.6 - Binary Download Sources
+# Update URLs sesuai kebutuhan & platform
+
+version: "3.6.0"
+platform: "linux"
+
+binaries:
+  apache:
+    name: "Apache HTTP Server"
+    version: "2.4.62"
+    url: "https://downloads.apache.org/httpd/httpd-2.4.62.tar.gz"
+    # Alternative: Pre-compiled binary
+    # url: "https://apache.mirror.example.com/httpd-2.4.62-linux-x86_64.tar.gz"
+    checksum: "sha256:placeholder_apache_checksum"
+    extract_to: "bin/apache/"
+    archive_name: "httpd-2.4.62"
+    
+  mysql:
+    name: "MySQL Server"
+    version: "8.4.3"
+    url: "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-8.4.3-linux-glibc2.28-x86_64.tar.gz"
+    checksum: "sha256:placeholder_mysql_checksum"
+    extract_to: "bin/mysql/"
+    archive_name: "mysql-8.4.3-linux-glibc2.28-x86_64"
+    
+  php:
+    name: "PHP"
+    version: "8.3.26"
+    url: "https://www.php.net/distributions/php-8.3.26.tar.gz"
+    # Alternative: Pre-compiled
+    # url: "https://php.mirror.example.com/php-8.3.26-linux-x86_64.tar.gz"
+    checksum: "sha256:placeholder_php_checksum"
+    extract_to: "bin/php/"
+    archive_name: "php-8.3.26"
+    
+  phpmyadmin:
+    name: "phpMyAdmin"
+    version: "5.2.1"
+    url: "https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.tar.gz"
+    checksum: "sha256:placeholder_phpmyadmin_checksum"
+    extract_to: "bin/phpmyadmin/"
+    archive_name: "phpMyAdmin-5.2.1-all-languages"
+
+# Fallback mirrors (jika primary gagal)
+mirrors:
+  apache:
+    - "https://archive.apache.org/dist/httpd/httpd-2.4.62.tar.gz"
+    - "https://mirror1.example.com/apache/httpd-2.4.62.tar.gz"
+  
+  mysql:
+    - "https://cdn.mysql.com/Downloads/MySQL-8.4/mysql-8.4.3-linux-glibc2.28-x86_64.tar.gz"
+  
+  php:
+    - "https://museum.php.net/php8/php-8.3.26.tar.gz"
+  
+  phpmyadmin:
+    - "https://github.com/phpmyadmin/phpmyadmin/releases/download/RELEASE_5_2_1/phpMyAdmin-5.2.1-all-languages.tar.gz"
+
+# Download options
+options:
+  timeout: 300  # seconds
+  retry_count: 3
+  verify_checksum: false  # set true untuk production
+  skip_existing: true  # skip jika sudah ada

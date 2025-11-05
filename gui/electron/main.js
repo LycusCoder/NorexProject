@@ -38,10 +38,11 @@ function createWindow() {
     width: 900,
     height: 600,
     frame: false,              // No native window decorations
-    transparent: false,
+    transparent: true,         // Enable transparency for rounded corners
     resizable: true,
     minWidth: 800,
     minHeight: 500,
+    backgroundColor: '#00000000', // Transparent background
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,  // Security: isolate context
@@ -105,38 +106,76 @@ ipcMain.handle('execute_bash_script', async (event, { command }) => {
     
     // Determine log file based on command
     let logFilename = 'gui_commands.log';
-    if (command.includes('start.sh')) logFilename = 'gui_start.log';
-    else if (command.includes('stop.sh')) logFilename = 'gui_stop.log';
-    else if (command.includes('status.sh')) logFilename = 'gui_status.log';
-    else if (command.includes('docker start')) logFilename = 'gui_docker_start.log';
-    else if (command.includes('docker stop')) logFilename = 'gui_docker_stop.log';
-    else if (command.includes('docker restart')) logFilename = 'gui_docker_restart.log';
+    let actionMessage = '';
+    
+    if (command.includes('start.sh')) {
+      logFilename = 'start_services.log';
+      actionMessage = '🚀 Service dijalankan';
+    } else if (command.includes('stop.sh')) {
+      logFilename = 'start_services.log';
+      actionMessage = '🛑 Service sedang dihentikan';
+    } else if (command.includes('status.sh')) {
+      logFilename = 'gui_status.log';
+    } else if (command.includes('docker start')) {
+      logFilename = 'gui_docker_start.log';
+    } else if (command.includes('docker stop')) {
+      logFilename = 'gui_docker_stop.log';
+    } else if (command.includes('docker restart')) {
+      logFilename = 'gui_docker_restart.log';
+    }
     
     const logFilePath = path.join(logsDir, logFilename);
-    const timestamp = new Date().toLocaleString();
+    const timestamp = new Date().toLocaleString('id-ID', { 
+      year: 'numeric', 
+      month: '2-digit', 
+      day: '2-digit',
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: false 
+    });
     
-    // Log command execution
+    // Log command execution with custom message
     const logEntry = `\n[${timestamp}] ═══════════════════════════════════════\n`;
-    const logCommand = `[${timestamp}] 🚀 EXECUTING: ${command}\n`;
+    const logCommand = actionMessage 
+      ? `[${timestamp}] ${actionMessage}\n[${timestamp}] COMMAND: ${command}\n`
+      : `[${timestamp}] 🚀 EXECUTING: ${command}\n`;
     
     fs.appendFileSync(logFilePath, logEntry + logCommand);
     
     // Execute command
     exec(command, { cwd: projectRoot }, (error, stdout, stderr) => {
+      const finishTimestamp = new Date().toLocaleString('id-ID', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false 
+      });
+      
       // Log output
       if (stdout) {
-        fs.appendFileSync(logFilePath, `[${timestamp}] STDOUT:\n${stdout}\n`);
+        fs.appendFileSync(logFilePath, `[${finishTimestamp}] OUTPUT:\n${stdout}\n`);
       }
-      if (stderr) {
-        fs.appendFileSync(logFilePath, `[${timestamp}] STDERR:\n${stderr}\n`);
+      if (stderr && !error) {
+        fs.appendFileSync(logFilePath, `[${finishTimestamp}] INFO:\n${stderr}\n`);
       }
       
       if (error) {
-        const errorMsg = `[${timestamp}] ❌ FAILED - Exit code: ${error.code}\n`;
+        const errorMsg = `[${finishTimestamp}] ❌ GAGAL - Exit code: ${error.code}\n`;
         fs.appendFileSync(logFilePath, errorMsg);
+        if (stderr) {
+          fs.appendFileSync(logFilePath, `[${finishTimestamp}] ERROR:\n${stderr}\n`);
+        }
         reject(`Command failed (exit code ${error.code}):\n${stderr}`);
       } else {
-        const successMsg = `[${timestamp}] ✅ SUCCESS - Exit code: 0\n`;
+        const successMsg = actionMessage.includes('dijalankan')
+          ? `[${finishTimestamp}] ✅ Service berhasil dijalankan!\n`
+          : actionMessage.includes('dihentikan')
+          ? `[${finishTimestamp}] ✅ Service berhasil dihentikan!\n`
+          : `[${finishTimestamp}] ✅ SUCCESS - Exit code: 0\n`;
         fs.appendFileSync(logFilePath, successMsg);
         resolve(stdout);
       }

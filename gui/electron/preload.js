@@ -22,6 +22,11 @@ contextBridge.exposeInMainWorld('electron', {
     }
   },
   
+  // Helper: Execute bash script
+  executeBashScript: (command) => {
+    return ipcRenderer.invoke('execute_bash_script', { command });
+  },
+  
   // Window controls
   minimize: () => ipcRenderer.invoke('window-minimize'),
   close: () => ipcRenderer.invoke('window-close'),
