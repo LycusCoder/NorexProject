@@ -1,16 +1,21 @@
-// NOREX V3.6 - Advanced Tab (Placeholder for Phase 4.4)
-import React from 'react';
-import { Save, RotateCcw, FileText, Settings } from 'lucide-react';
+// NOREX V3.6 - Advanced Tab (Redesigned - Modern & Organized)
+import React, { useState } from 'react';
+import { Save, RotateCcw, FileText, Settings, Shield, Bell, Palette } from 'lucide-react';
 
 const AdvancedTab: React.FC = () => {
+  const [autoUpdate, setAutoUpdate] = useState(true);
+  const [minimizeToTray, setMinimizeToTray] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(true);
+  const [enableBackupReminder, setEnableBackupReminder] = useState(true);
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" style={{ minHeight: '450px' }}>
       {/* Header */}
       <div className="mb-4">
-        <h3 className="text-base font-semibold mb-1" style={{ color: '#E9ECF2' }}>
+        <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
           Advanced Settings
         </h3>
-        <p className="text-sm" style={{ color: '#A8AEBF' }}>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
           Backup/restore configurations, view logs, and manage system settings
         </p>
       </div>
@@ -18,33 +23,42 @@ const AdvancedTab: React.FC = () => {
       {/* Backup & Restore Section */}
       <div
         className="p-4 rounded-lg border"
-        style={{ backgroundColor: '#0F1117', borderColor: 'rgba(255,255,255,0.05)' }}
+        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
       >
         <div className="flex items-center space-x-3 mb-3">
-          <Save className="w-5 h-5" style={{ color: '#6A5AEC' }} />
-          <h4 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>
-            Backup & Restore
-          </h4>
-        </div>
-        <p className="text-xs mb-4" style={{ color: '#A8AEBF' }}>
-          Create backups of your configuration files or restore from previous backups
-        </p>
-        <div className="flex items-center space-x-2">
-          <button
-            className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150"
-            style={{ backgroundColor: '#3FBF75', color: '#FFFFFF' }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#2FAF65')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#3FBF75')}
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: 'var(--bg-hover)' }}
           >
+            <Save className="w-4 h-4" style={{ color: 'var(--accent-green)' }} />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+              Backup & Restore
+            </h4>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+              Manage configuration backups
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 flex items-center gap-2 justify-center"
+            style={{ backgroundColor: 'var(--accent-green)', color: '#FFFFFF' }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            <Save className="w-4 h-4" />
             Create Backup
           </button>
           <button
-            className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150"
-            style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF' }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#3A93D6')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#4BA3E6')}
+            className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 flex items-center gap-2 justify-center"
+            style={{ backgroundColor: 'var(--accent-blue)', color: '#FFFFFF' }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            Restore Backup
+            <RotateCcw className="w-4 h-4" />
+            Restore
           </button>
         </div>
       </div>
@@ -52,96 +66,180 @@ const AdvancedTab: React.FC = () => {
       {/* Log Management Section */}
       <div
         className="p-4 rounded-lg border"
-        style={{ backgroundColor: '#0F1117', borderColor: 'rgba(255,255,255,0.05)' }}
+        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
       >
         <div className="flex items-center space-x-3 mb-3">
-          <FileText className="w-5 h-5" style={{ color: '#6A5AEC' }} />
-          <h4 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>
-            Log Management
-          </h4>
-        </div>
-        <p className="text-xs mb-4" style={{ color: '#A8AEBF' }}>
-          View and manage system logs for debugging and monitoring
-        </p>
-        <div className="flex items-center space-x-2">
-          <button
-            className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150"
-            style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF' }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#5A4ADC')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#6A5AEC')}
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: 'var(--bg-hover)' }}
           >
+            <FileText className="w-4 h-4" style={{ color: 'var(--accent-blue)' }} />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+              Log Management
+            </h4>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+              View and manage system logs
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 flex items-center gap-2 justify-center"
+            style={{ backgroundColor: 'var(--accent-purple)', color: '#FFFFFF' }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            <FileText className="w-4 h-4" />
             View Logs
           </button>
           <button
-            className="flex-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150"
-            style={{ backgroundColor: '#D95757', color: '#FFFFFF' }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C94747')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#D95757')}
+            className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 flex items-center gap-2 justify-center"
+            style={{ backgroundColor: 'var(--accent-red)', color: '#FFFFFF' }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
+            <RotateCcw className="w-4 h-4" />
             Clear Logs
           </button>
         </div>
       </div>
 
-      {/* System Settings Section */}
+      {/* System Preferences */}
       <div
         className="p-4 rounded-lg border"
-        style={{ backgroundColor: '#0F1117', borderColor: 'rgba(255,255,255,0.05)' }}
+        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
       >
-        <div className="flex items-center space-x-3 mb-3">
-          <Settings className="w-5 h-5" style={{ color: '#6A5AEC' }} />
-          <h4 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>
-            System Settings
-          </h4>
+        <div className="flex items-center space-x-3 mb-4">
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: 'var(--bg-hover)' }}
+          >
+            <Settings className="w-4 h-4" style={{ color: 'var(--accent-purple)' }} />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+              System Preferences
+            </h4>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+              Configure application behavior
+            </p>
+          </div>
         </div>
         <div className="space-y-3">
+          {/* Auto-update Toggle */}
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm" style={{ color: '#E9ECF2' }}>
+            <div className="flex-1">
+              <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
                 Auto-update on startup
               </p>
-              <p className="text-xs" style={{ color: '#A8AEBF' }}>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 Check for updates when application starts
               </p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" defaultChecked />
+            <label className="relative inline-flex items-center cursor-pointer ml-4">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={autoUpdate}
+                onChange={() => setAutoUpdate(!autoUpdate)}
+              />
               <div
                 className="w-11 h-6 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
-                style={{ backgroundColor: '#6A5AEC' }}
+                style={{ backgroundColor: autoUpdate ? 'var(--accent-purple)' : 'var(--bg-hover)' }}
               ></div>
             </label>
           </div>
 
+          {/* Minimize to Tray Toggle */}
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm" style={{ color: '#E9ECF2' }}>
+            <div className="flex-1">
+              <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
                 Minimize to tray
               </p>
-              <p className="text-xs" style={{ color: '#A8AEBF' }}>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 Keep application running in system tray
               </p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" />
+            <label className="relative inline-flex items-center cursor-pointer ml-4">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={minimizeToTray}
+                onChange={() => setMinimizeToTray(!minimizeToTray)}
+              />
               <div
                 className="w-11 h-6 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
-                style={{ backgroundColor: '#4A5568' }}
+                style={{ backgroundColor: minimizeToTray ? 'var(--accent-purple)' : 'var(--bg-hover)' }}
+              ></div>
+            </label>
+          </div>
+
+          {/* Show Notifications Toggle */}
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                Show notifications
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                Display system notifications for important events
+              </p>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer ml-4">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={showNotifications}
+                onChange={() => setShowNotifications(!showNotifications)}
+              />
+              <div
+                className="w-11 h-6 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+                style={{ backgroundColor: showNotifications ? 'var(--accent-purple)' : 'var(--bg-hover)' }}
+              ></div>
+            </label>
+          </div>
+
+          {/* Backup Reminder Toggle */}
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                Backup reminders
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                Remind to backup configurations weekly
+              </p>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer ml-4">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={enableBackupReminder}
+                onChange={() => setEnableBackupReminder(!enableBackupReminder)}
+              />
+              <div
+                className="w-11 h-6 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+                style={{ backgroundColor: enableBackupReminder ? 'var(--accent-purple)' : 'var(--bg-hover)' }}
               ></div>
             </label>
           </div>
         </div>
       </div>
 
-      {/* Placeholder Notice */}
+      {/* About Section */}
       <div
-        className="mt-6 p-4 rounded-lg border"
-        style={{ backgroundColor: '#0F1117', borderColor: 'rgba(255,255,255,0.05)' }}
+        className="mt-4 p-4 rounded-lg border"
+        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
       >
-        <p className="text-sm" style={{ color: '#A8AEBF' }}>
-          ℹ️ <strong>Phase 4.4:</strong> Full advanced features will be implemented here,
-          including functional backup/restore, log viewer, and system preferences.
-        </p>
+        <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+          ℹ️ About Norex v3.6
+        </h4>
+        <div className="space-y-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+          <p>• Version: 3.6.0</p>
+          <p>• Build Date: 2025-01-15</p>
+          <p>• Runtime: Electron + React</p>
+          <p>• License: Proprietary</p>
+        </div>
       </div>
     </div>
   );
