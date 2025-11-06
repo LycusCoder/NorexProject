@@ -1,5 +1,5 @@
 // NOREX V3.6 - Settings Dialog Modal
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Download, Settings as SettingsIcon, Sliders } from 'lucide-react';
 import DownloadsTab from './DownloadsTab';
 import ServicesTab from './ServicesTab';
@@ -9,12 +9,43 @@ interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   isStandaloneWindow?: boolean; // Flag untuk deteksi standalone window
+  theme?: 'dark' | 'light'; // NEW: Theme prop
 }
 
 type TabType = 'downloads' | 'services' | 'advanced';
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStandaloneWindow = false }) => {
+const SettingsDialog: React.FC<SettingsDialogProps> = ({ 
+  isOpen, 
+  onClose, 
+  isStandaloneWindow = false,
+  theme = 'dark' // Default theme
+}) => {
   const [activeTab, setActiveTab] = useState<TabType>('downloads');
+
+  // NEW: Apply theme to standalone window
+  useEffect(() => {
+    if (isStandaloneWindow) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }, [theme, isStandaloneWindow]);
+
+  // NEW: Listen for theme changes from main process (for standalone window)
+  useEffect(() => {
+    if (isStandaloneWindow && window.electron && window.electron.onThemeChange) {
+      const handleThemeChange = (newTheme: 'dark' | 'light') => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+      };
+      
+      window.electron.onThemeChange(handleThemeChange);
+      
+      // Cleanup listener on unmount
+      return () => {
+        if (window.electron.removeThemeListener) {
+          window.electron.removeThemeListener(handleThemeChange);
+        }
+      };
+    }
+  }, [isStandaloneWindow]);
 
   if (!isOpen) return null;
 

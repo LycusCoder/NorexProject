@@ -203,8 +203,9 @@ const App: React.FC = () => {
               {theme === 'dark' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
             </button>
             
+            {/* Settings Button - Pass theme to settings window */}
             <button 
-              onClick={() => window.electron.openSettingsWindow()}
+              onClick={() => window.electron.openSettingsWindow(theme)}
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
               style={{ color: 'var(--text-secondary)' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}

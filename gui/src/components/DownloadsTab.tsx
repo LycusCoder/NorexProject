@@ -51,6 +51,7 @@ const DownloadsTab: React.FC = () => {
   const fetchDownloads = async () => {
     try {
       setLoading(true);
+      // FIXED: Removed /bin/bash prefix for cross-platform compatibility
       const result = await window.electron.executeBashScript(`${projectRoot}/scripts/config/get_all_downloads.sh`);
       const data = JSON.parse(result);
 
