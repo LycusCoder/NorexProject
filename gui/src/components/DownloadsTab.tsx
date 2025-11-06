@@ -55,7 +55,9 @@ const DownloadsTab: React.FC = () => {
     try {
       setLoading(true);
       // FIXED: Removed /bin/bash prefix for cross-platform compatibility
-      const result = await window.electron.executeBashScript(`${projectRoot}/scripts/config/get_all_downloads.sh`);
+      const scriptPath = `${projectRoot}/scripts/config/get_all_downloads.sh`;
+      console.log('📂 Executing script:', scriptPath);
+      const result = await window.electron.executeBashScript(scriptPath);
       const data = JSON.parse(result);
 
       if (data.error) {
