@@ -194,10 +194,16 @@ const DownloadsTab: React.FC = () => {
     return <Download className="w-5 h-5" style={{ color: '#A8AEBF' }} />;
   };
 
-  if (loading) {
+  // Show loading if project root not loaded yet OR fetching downloads
+  if (!projectRoot || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader className="w-8 h-8 animate-spin" style={{ color: '#6A5AEC' }} />
+        <div className="text-center">
+          <Loader className="w-8 h-8 animate-spin mx-auto mb-2" style={{ color: '#6A5AEC' }} />
+          <p className="text-sm" style={{ color: '#A8AEBF' }}>
+            {!projectRoot ? 'Loading project root...' : 'Loading downloads...'}
+          </p>
+        </div>
       </div>
     );
   }
