@@ -173,11 +173,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
         {/* Tab Content - Scrollable with FIXED height */}
         <div 
-          className="flex-1 overflow-y-auto px-6 py-4" 
+          className="flex-1 overflow-y-auto px-6 py-4 relative" 
           style={{ 
             backgroundColor: 'var(--bg-primary)',
             WebkitAppRegion: 'no-drag',
-            minHeight: 0 // Important for flex overflow
+            minHeight: '450px' // FIXED: Prevent collapse during loading
           } as React.CSSProperties}
         >
           {activeTab === 'downloads' && <DownloadsTab />}
