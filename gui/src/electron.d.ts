@@ -11,6 +11,10 @@ export interface ElectronAPI {
   // Browser integration
   openUrl: (url: string) => void;
   
+  // Settings window controls
+  openSettingsWindow: () => Promise<void>;
+  closeSettingsWindow: () => Promise<void>;
+  
   // Event listeners
   on: (channel: string, callback: (...args: any[]) => void) => void;
   removeListener: (channel: string, callback: (...args: any[]) => void) => void;

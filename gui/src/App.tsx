@@ -175,6 +175,7 @@ const App: React.FC = () => {
           
           <div className="flex items-center space-x-1 pointer-events-auto" style={{ WebkitAppRegion: 'no-drag' } as any}>
             <button 
+              onClick={() => window.electron.openSettingsWindow()}
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
               style={{ color: '#A8AEBF' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1B1F28'}

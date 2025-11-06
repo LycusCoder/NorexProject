@@ -34,6 +34,10 @@ contextBridge.exposeInMainWorld('electron', {
   // Open URL in browser
   openUrl: (url) => ipcRenderer.invoke('open-url', url),
   
+  // Settings window controls
+  openSettingsWindow: () => ipcRenderer.invoke('open-settings-window'),
+  closeSettingsWindow: () => ipcRenderer.invoke('close-settings-window'),
+  
   // Listen to events from main process
   on: (channel, callback) => {
     const validChannels = ['run_script', 'open_folder'];

@@ -6,6 +6,7 @@ const fs = require('fs');
 const { setupTray } = require('./tray');
 
 let mainWindow = null;
+let settingsWindow = null;
 
 // Helper function to get project root
 function getProjectRoot() {
@@ -68,6 +69,46 @@ function createWindow() {
   });
 
   return mainWindow;
+}
+
+// Create Settings window
+function createSettingsWindow() {
+  // Jika window Settings sudah ada, focus saja
+  if (settingsWindow) {
+    settingsWindow.focus();
+    return settingsWindow;
+  }
+
+  settingsWindow = new BrowserWindow({
+    width: 1024,               // Pas dengan ukuran modal
+    height: 720,               // Pas dengan ukuran modal
+    frame: false,              // No native window decorations
+    transparent: true,         // Enable transparency for rounded corners
+    resizable: false,          // Lock size agar pas dengan modal
+    backgroundColor: '#00000000', // Transparent background
+    parent: mainWindow,        // Set main window as parent
+    modal: false,              // Tidak modal agar bisa di-drag bebas
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false
+    }
+  });
+
+  // Load Settings page
+  if (process.env.NODE_ENV === 'development') {
+    settingsWindow.loadURL('http://localhost:5173/settings.html');
+  } else {
+    settingsWindow.loadFile(path.join(__dirname, '../dist/settings.html'));
+  }
+
+  // Handle window close
+  settingsWindow.on('close', () => {
+    settingsWindow = null;
+  });
+
+  return settingsWindow;
 }
 
 // App ready event
@@ -302,6 +343,19 @@ ipcMain.handle('window-close', () => {
 // Open URL in browser
 ipcMain.handle('open-url', async (event, url) => {
   await shell.openExternal(url);
+});
+
+// Open Settings window
+ipcMain.handle('open-settings-window', () => {
+  createSettingsWindow();
+});
+
+// Close Settings window
+ipcMain.handle('close-settings-window', () => {
+  if (settingsWindow) {
+    settingsWindow.close();
+    settingsWindow = null;
+  }
 });
 
 const projectRoot = getProjectRoot();
