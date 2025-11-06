@@ -98,8 +98,9 @@ const DownloadsTab: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch downloads only after projectRoot is set
+    // FIXED: Fetch downloads only after projectRoot is loaded from electron (not null)
     if (projectRoot) {
+      console.log('🚀 Fetching downloads with project root:', projectRoot);
       fetchDownloads();
     }
   }, [projectRoot]);
