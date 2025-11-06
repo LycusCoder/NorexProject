@@ -340,6 +340,11 @@ ipcMain.handle('window-close', () => {
   app.quit();
 });
 
+// Get project root path
+ipcMain.handle('get_project_root', () => {
+  return getProjectRoot();
+});
+
 // Open URL in browser
 ipcMain.handle('open-url', async (event, url) => {
   await shell.openExternal(url);

@@ -42,7 +42,7 @@ binaries:
     extract_to: "bin/phpmyadmin/"
     archive_name: "phpMyAdmin-5.2.1-all-languages"
 options:
-  timeout: 300
+  timeout: 600
   retry_count: 3
   verify_checksum: false # enable setelah stable
   skip_existing: true

@@ -27,6 +27,11 @@ contextBridge.exposeInMainWorld('electron', {
     return ipcRenderer.invoke('execute_bash_script', { command });
   },
   
+  // Helper: Get project root path
+  getProjectRoot: () => {
+    return ipcRenderer.invoke('get_project_root');
+  },
+  
   // Window controls
   minimize: () => ipcRenderer.invoke('window-minimize'),
   close: () => ipcRenderer.invoke('window-close'),

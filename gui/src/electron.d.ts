@@ -4,6 +4,12 @@ export interface ElectronAPI {
   // IPC invoke for backend commands
   invoke: (channel: string, args?: any) => Promise<any>;
   
+  // Execute bash scripts
+  executeBashScript: (command: string) => Promise<string>;
+  
+  // Get project root path
+  getProjectRoot: () => Promise<string>;
+  
   // Window controls
   minimize: () => void;
   close: () => void;

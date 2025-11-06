@@ -36,18 +36,18 @@ if HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" -m "$TIMEOUT" -L --head "$
         if [ -n "$FILE_SIZE" ]; then
             # Convert to human readable (MB)
             FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / 1024 / 1024" | bc)
-            echo "{\"success\": true, \"http_code\": $HTTP_CODE, \"response_time\": ${RESPONSE_TIME}s, \"file_size\": \"${FILE_SIZE_MB} MB\", \"message\": \"URL is accessible\"}"
+            echo "{\"success\": true, \"http_code\": $HTTP_CODE, \"response_time\": \"${RESPONSE_TIME}s\", \"file_size\": \"${FILE_SIZE_MB} MB\", \"message\": \"URL is accessible\"}"
         else
-            echo "{\"success\": true, \"http_code\": $HTTP_CODE, \"response_time\": ${RESPONSE_TIME}s, \"message\": \"URL is accessible\"}"
+            echo "{\"success\": true, \"http_code\": $HTTP_CODE, \"response_time\": \"${RESPONSE_TIME}s\", \"message\": \"URL is accessible\"}"
         fi
         exit 0
     else
-        echo "{\"success\": false, \"http_code\": $HTTP_CODE, \"response_time\": ${RESPONSE_TIME}s, \"error\": \"HTTP error code: $HTTP_CODE\"}"
+        echo "{\"success\": false, \"http_code\": $HTTP_CODE, \"response_time\": \"${RESPONSE_TIME}s\", \"error\": \"HTTP error code: $HTTP_CODE\"}"
         exit 1
     fi
 else
     END_TIME=$(date +%s)
     RESPONSE_TIME=$((END_TIME - START_TIME))
-    echo "{\"success\": false, \"response_time\": ${RESPONSE_TIME}s, \"error\": \"Failed to connect to URL (timeout or network error)\"}"
+    echo "{\"success\": false, \"response_time\": \"${RESPONSE_TIME}s\", \"error\": \"Failed to connect to URL (timeout or network error)\"}"
     exit 1
 fi

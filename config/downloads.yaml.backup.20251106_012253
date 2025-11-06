@@ -3,7 +3,7 @@ platform: "linux"
 binaries:
   apache:
     name: "Apache HTTP Server"
-    version: "2.4.62"
+    version: "2.4.63-test"
     url: "https://archive.apache.org/dist/httpd/httpd-2.4.62.tar.gz"
     mirrors:
       - "https://mirror.lyrahosting.com/apache/httpd/httpd-2.4.62.tar.gz"

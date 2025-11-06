@@ -1,7 +1,7 @@
 # 📜 NorexProject - Golden Rules
 
-**Version:** 1.0  
-**Last Updated:** Phase 3  
+**Version:** 1.1  
+**Last Updated:** Phase 4.2 (Multi-Platform Path Support)  
 **Purpose:** Project standards untuk menjaga konsistensi, profesionalitas, dan maintainability
 
 ---
@@ -233,6 +233,111 @@ Warning:    #ffa500
 ```
 
 **Rule:** Stick to this palette. No random colors!
+
+---
+
+## 🗂️ Path Management Rules
+
+### **CRITICAL: Use PROJECT_ROOT, Not Hardcoded Paths!**
+
+**❌ NEVER hardcode `/app/` paths:**
+```bash
+# ❌ BAD - Breaks in local development
+cd /app/scripts
+bash /app/scripts/config/get_all_downloads.sh
+```
+
+**✅ ALWAYS use PROJECT_ROOT variable:**
+```bash
+# ✅ GOOD - Works everywhere (Docker, local, any OS)
+source "$(dirname "$0")/../project_root.sh"
+cd "${PROJECT_ROOT}/scripts"
+bash "${PROJECT_ROOT}/scripts/config/get_all_downloads.sh"
+```
+
+### **Bash Scripts - Dynamic Path Detection**
+
+**Every script MUST include project_root.sh:**
+```bash
+#!/bin/bash
+################################################################################
+# Script Name - Description
+################################################################################
+
+set -e
+
+# Load project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../project_root.sh"
+
+# Now use PROJECT_ROOT variable
+CONFIG_FILE="${PROJECT_ROOT}/config/downloads.yaml"
+```
+
+**How project_root.sh works:**
+```bash
+# Automatically detects project root from script location
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+export PROJECT_ROOT
+```
+
+### **Frontend (Electron/React) - Dynamic Paths**
+
+**❌ NEVER hardcode paths in frontend:**
+```typescript
+// ❌ BAD - Breaks on local machines
+await window.electron.executeBashScript('/app/scripts/config/get_all.sh');
+```
+
+**✅ ALWAYS get PROJECT_ROOT dynamically:**
+```typescript
+// ✅ GOOD - Get project root once on mount
+const [projectRoot, setProjectRoot] = useState<string>('/app');
+
+useEffect(() => {
+  const init = async () => {
+    const root = await window.electron.getProjectRoot();
+    setProjectRoot(root);
+  };
+  init();
+}, []);
+
+// Then use it in all script calls
+await window.electron.executeBashScript(`${projectRoot}/scripts/config/get_all.sh`);
+```
+
+### **Why This Matters**
+
+| Environment | Path | Hardcoded /app/ | PROJECT_ROOT |
+|-------------|------|-----------------|--------------|
+| Docker Container | `/app/` | ✅ Works | ✅ Works |
+| Local Linux | `/home/user/project/` | ❌ Breaks | ✅ Works |
+| Local macOS | `/Users/user/project/` | ❌ Breaks | ✅ Works |
+| Local Windows (WSL) | `/mnt/c/Users/project/` | ❌ Breaks | ✅ Works |
+
+### **Files That Must Be Updated**
+
+When adding new scripts or features:
+- [ ] **Bash scripts** - Include `source project_root.sh`
+- [ ] **Frontend components** - Use `getProjectRoot()` API
+- [ ] **Electron handlers** - Pass PROJECT_ROOT env variable
+- [ ] **Config files** - Use relative paths
+- [ ] **Documentation** - Show dynamic path usage
+
+### **Path Rules Summary**
+
+**✅ DO:**
+- Use `PROJECT_ROOT` variable in all bash scripts
+- Call `window.electron.getProjectRoot()` in frontend
+- Document path resolution in new features
+- Test on both Docker AND local environments
+
+**❌ DON'T:**
+- Hardcode `/app/` anywhere in code
+- Assume fixed directory structure
+- Skip testing on local machine
+- Forget to source `project_root.sh`
 
 ---
 
@@ -872,9 +977,15 @@ Only essential files!
 - ✅ Followed strictly
 - ✅ Shared with contributors
 
-**Last Review:** Phase 3 Complete  
-**Next Review:** Phase 4 Planning  
+**Last Review:** Phase 4.2 Complete  
+**Next Review:** Phase 5 Planning  
 **Maintained By:** Project Lead
+
+**Recent Updates (v1.1):**
+- ✅ Added PROJECT_ROOT path management rules
+- ✅ Multi-platform support (Docker, Linux, macOS, Windows/WSL)
+- ✅ Dynamic path detection for bash scripts
+- ✅ Frontend PROJECT_ROOT API guidelines
 
 ---
 
@@ -892,4 +1003,4 @@ Only essential files!
 
 ---
 
-*NorexProject Golden Rules v1.0 - Your guide to excellence!*
+*NorexProject Golden Rules v1.1 - Your guide to excellence!*

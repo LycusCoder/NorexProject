@@ -19,7 +19,13 @@ RUN apt-get update && apt-get install -y \
     nano \
     curl \
     wget \
+    jq \
+    bc \
     && rm -rf /var/lib/apt/lists/*
+
+# Install yq (YAML processor) for downloads.yaml management
+RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
+    && chmod +x /usr/local/bin/yq
 
 # Configure and install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
