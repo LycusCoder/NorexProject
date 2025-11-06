@@ -72,10 +72,12 @@ function createWindow() {
 }
 
 // Create Settings window
-function createSettingsWindow() {
+function createSettingsWindow(theme = 'dark') {
   // Jika window Settings sudah ada, focus saja
   if (settingsWindow) {
     settingsWindow.focus();
+    // Send updated theme to existing window
+    settingsWindow.webContents.send('set-theme', theme);
     return settingsWindow;
   }
 
@@ -102,6 +104,11 @@ function createSettingsWindow() {
   } else {
     settingsWindow.loadFile(path.join(__dirname, '../dist/settings.html'));
   }
+
+  // Send theme to settings window after loaded
+  settingsWindow.webContents.once('did-finish-load', () => {
+    settingsWindow.webContents.send('set-theme', theme);
+  });
 
   // Handle window close
   settingsWindow.on('close', () => {
@@ -350,9 +357,9 @@ ipcMain.handle('open-url', async (event, url) => {
   await shell.openExternal(url);
 });
 
-// Open Settings window
-ipcMain.handle('open-settings-window', () => {
-  createSettingsWindow();
+// Open Settings window - NOW WITH THEME PARAMETER
+ipcMain.handle('open-settings-window', (event, theme = 'dark') => {
+  createSettingsWindow(theme);
 });
 
 // Close Settings window

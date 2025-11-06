@@ -1,5 +1,5 @@
 // NOREX V3.6 - Settings Dialog Modal
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Download, Settings as SettingsIcon, Sliders } from 'lucide-react';
 import DownloadsTab from './DownloadsTab';
 import ServicesTab from './ServicesTab';
@@ -9,12 +9,43 @@ interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   isStandaloneWindow?: boolean; // Flag untuk deteksi standalone window
+  theme?: 'dark' | 'light'; // NEW: Theme prop
 }
 
 type TabType = 'downloads' | 'services' | 'advanced';
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStandaloneWindow = false }) => {
+const SettingsDialog: React.FC<SettingsDialogProps> = ({ 
+  isOpen, 
+  onClose, 
+  isStandaloneWindow = false,
+  theme = 'dark' // Default theme
+}) => {
   const [activeTab, setActiveTab] = useState<TabType>('downloads');
+
+  // NEW: Apply theme to standalone window
+  useEffect(() => {
+    if (isStandaloneWindow) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }, [theme, isStandaloneWindow]);
+
+  // NEW: Listen for theme changes from main process (for standalone window)
+  useEffect(() => {
+    if (isStandaloneWindow && window.electron && window.electron.onThemeChange) {
+      const handleThemeChange = (newTheme: 'dark' | 'light') => {
+        document.documentElement.setAttribute('data-theme', newTheme);
+      };
+      
+      window.electron.onThemeChange(handleThemeChange);
+      
+      // Cleanup listener on unmount
+      return () => {
+        if (window.electron.removeThemeListener) {
+          window.electron.removeThemeListener(handleThemeChange);
+        }
+      };
+    }
+  }, [isStandaloneWindow]);
 
   if (!isOpen) return null;
 
@@ -37,22 +68,23 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
       onClick={isStandaloneWindow ? undefined : onClose}
       onKeyDown={handleEscapeKey}
     >
-      {/* Modal Container */}
+      {/* Modal Container - FIXED SIZE */}
       <div
-        className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-xl shadow-2xl"
+        className="relative flex flex-col rounded-xl shadow-2xl"
         style={{ 
-          backgroundColor: '#161920',
-          maxWidth: isStandaloneWindow ? '100%' : '56rem',
-          height: isStandaloneWindow ? '100vh' : 'auto',
-          maxHeight: isStandaloneWindow ? '100vh' : '85vh'
+          backgroundColor: 'var(--bg-primary)',
+          width: isStandaloneWindow ? '100%' : '900px',
+          height: isStandaloneWindow ? '100vh' : '650px',
+          maxWidth: isStandaloneWindow ? '100%' : '900px',
+          maxHeight: isStandaloneWindow ? '100vh' : '650px'
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Draggable Region */}
         <div
-          className="flex items-center justify-between px-6 py-4 border-b"
+          className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0"
           style={{ 
-            borderBottomColor: 'rgba(255,255,255,0.05)',
+            borderBottomColor: 'var(--border-color)',
             WebkitAppRegion: isStandaloneWindow ? 'drag' : 'no-drag'
           } as React.CSSProperties}
         >
@@ -69,10 +101,10 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
               <SettingsIcon className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold" style={{ color: '#E9ECF2' }}>
+              <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
                 Settings
               </h2>
-              <p className="text-xs" style={{ color: '#A8AEBF' }}>
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 Manage downloads, services, and advanced options
               </p>
             </div>
@@ -82,16 +114,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
             onClick={onClose}
             className="w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150"
             style={{ 
-              color: '#A8AEBF',
+              color: 'var(--text-secondary)',
               WebkitAppRegion: 'no-drag'
             } as React.CSSProperties}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#D95757';
+              e.currentTarget.style.backgroundColor = 'var(--accent-red)';
               e.currentTarget.style.color = '#FFFFFF';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = '#A8AEBF';
+              e.currentTarget.style.color = 'var(--text-secondary)';
             }}
             title="Close"
           >
@@ -101,10 +133,10 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
 
         {/* Tabs Navigation */}
         <div
-          className="flex items-center space-x-1 px-6 py-3 border-b"
+          className="flex items-center space-x-1 px-6 py-3 border-b flex-shrink-0"
           style={{ 
-            borderBottomColor: 'rgba(255,255,255,0.05)', 
-            backgroundColor: '#0F1117',
+            borderBottomColor: 'var(--border-color)', 
+            backgroundColor: 'var(--bg-secondary)',
             WebkitAppRegion: 'no-drag'
           } as React.CSSProperties}
         >
@@ -118,12 +150,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
                 onClick={() => setActiveTab(tab.id)}
                 className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-150 text-sm font-medium"
                 style={{
-                  backgroundColor: isActive ? '#6A5AEC' : 'transparent',
-                  color: isActive ? '#FFFFFF' : '#A8AEBF',
+                  backgroundColor: isActive ? 'var(--accent-purple)' : 'transparent',
+                  color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.backgroundColor = '#1B1F28';
+                    e.currentTarget.style.backgroundColor = 'var(--bg-hover)';
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -139,12 +171,13 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
           })}
         </div>
 
-        {/* Tab Content - Scrollable */}
+        {/* Tab Content - Scrollable with FIXED height */}
         <div 
           className="flex-1 overflow-y-auto px-6 py-4" 
           style={{ 
-            backgroundColor: '#161920',
-            WebkitAppRegion: 'no-drag'
+            backgroundColor: 'var(--bg-primary)',
+            WebkitAppRegion: 'no-drag',
+            minHeight: 0 // Important for flex overflow
           } as React.CSSProperties}
         >
           {activeTab === 'downloads' && <DownloadsTab />}
@@ -154,19 +187,19 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose, isStan
 
         {/* Footer */}
         <div
-          className="flex items-center justify-end space-x-3 px-6 py-4 border-t"
+          className="flex items-center justify-end space-x-3 px-6 py-4 border-t flex-shrink-0"
           style={{ 
-            borderTopColor: 'rgba(255,255,255,0.05)', 
-            backgroundColor: '#0F1117',
+            borderTopColor: 'var(--border-color)', 
+            backgroundColor: 'var(--bg-secondary)',
             WebkitAppRegion: 'no-drag'
           } as React.CSSProperties}
         >
           <button
             onClick={onClose}
             className="px-5 py-2 text-sm font-medium rounded-lg transition-all duration-150"
-            style={{ backgroundColor: '#1B1F28', color: '#E9ECF2' }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#252A35')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1B1F28')}
+            style={{ backgroundColor: 'var(--bg-hover)', color: 'var(--text-primary)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-secondary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-hover)')}
           >
             Close
           </button>

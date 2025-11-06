@@ -22,7 +22,7 @@ const DownloadsTab: React.FC = () => {
   const [globalSettings, setGlobalSettings] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [testingUrl, setTestingUrl] = useState<string | null>(null);
-  const [projectRoot, setProjectRoot] = useState<string>('/app'); // Default fallback
+  const [projectRoot, setProjectRoot] = useState<string | null>(null); // FIXED: Start with null
   const [editModal, setEditModal] = useState<{ open: boolean; binary: Binary | null }>({
     open: false,
     binary: null,
@@ -39,9 +39,12 @@ const DownloadsTab: React.FC = () => {
     const initProjectRoot = async () => {
       try {
         const root = await window.electron.getProjectRoot();
+        console.log('✅ Project root loaded from electron:', root);
         setProjectRoot(root);
       } catch (err) {
-        console.error('Failed to get project root, using default /app:', err);
+        console.error('❌ Failed to get project root from electron:', err);
+        // Fallback to /app only if electron API fails
+        setProjectRoot('/app');
       }
     };
     initProjectRoot();
@@ -51,7 +54,10 @@ const DownloadsTab: React.FC = () => {
   const fetchDownloads = async () => {
     try {
       setLoading(true);
-      const result = await window.electron.executeBashScript(`${projectRoot}/scripts/config/get_all_downloads.sh`);
+      // FIXED: Removed /bin/bash prefix for cross-platform compatibility
+      const scriptPath = `${projectRoot}/scripts/config/get_all_downloads.sh`;
+      console.log('📂 Executing script:', scriptPath);
+      const result = await window.electron.executeBashScript(scriptPath);
       const data = JSON.parse(result);
 
       if (data.error) {
@@ -94,8 +100,9 @@ const DownloadsTab: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch downloads only after projectRoot is set
+    // FIXED: Fetch downloads only after projectRoot is loaded from electron (not null)
     if (projectRoot) {
+      console.log('🚀 Fetching downloads with project root:', projectRoot);
       fetchDownloads();
     }
   }, [projectRoot]);
@@ -189,10 +196,16 @@ const DownloadsTab: React.FC = () => {
     return <Download className="w-5 h-5" style={{ color: '#A8AEBF' }} />;
   };
 
-  if (loading) {
+  // Show loading if project root not loaded yet OR fetching downloads
+  if (!projectRoot || loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader className="w-8 h-8 animate-spin" style={{ color: '#6A5AEC' }} />
+        <div className="text-center">
+          <Loader className="w-8 h-8 animate-spin mx-auto mb-2" style={{ color: '#6A5AEC' }} />
+          <p className="text-sm" style={{ color: '#A8AEBF' }}>
+            {!projectRoot ? 'Loading project root...' : 'Loading downloads...'}
+          </p>
+        </div>
       </div>
     );
   }

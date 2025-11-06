@@ -39,13 +39,23 @@ contextBridge.exposeInMainWorld('electron', {
   // Open URL in browser
   openUrl: (url) => ipcRenderer.invoke('open-url', url),
   
-  // Settings window controls
-  openSettingsWindow: () => ipcRenderer.invoke('open-settings-window'),
+  // Settings window controls - NOW WITH THEME PARAMETER
+  openSettingsWindow: (theme) => ipcRenderer.invoke('open-settings-window', theme),
   closeSettingsWindow: () => ipcRenderer.invoke('close-settings-window'),
+  
+  // Listen for theme changes (for standalone settings window)
+  onThemeChange: (callback) => {
+    ipcRenderer.on('set-theme', (event, theme) => callback(theme));
+  },
+  
+  // Remove theme listener
+  removeThemeListener: (callback) => {
+    ipcRenderer.removeListener('set-theme', callback);
+  },
   
   // Listen to events from main process
   on: (channel, callback) => {
-    const validChannels = ['run_script', 'open_folder'];
+    const validChannels = ['run_script', 'open_folder', 'set-theme'];
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => callback(...args));
     }

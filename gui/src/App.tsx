@@ -1,6 +1,6 @@
 // NorexProject v3.6 - Dashboard Interface (Binary-based Runtime)
 import React, { useState, useEffect } from 'react';
-import { Minimize, X, Settings, Zap, RotateCw, Power, Terminal, Database, Globe, ChevronDown } from 'lucide-react';
+import { Minimize, X, Settings, Zap, RotateCw, Power, Terminal, Database, Globe, Moon, Sun } from 'lucide-react';
 
 interface Service {
   name: string;
@@ -23,6 +23,23 @@ const App: React.FC = () => {
   const [projectRoot] = useState('/app/www');
   const [projectDomain] = useState('localhost:8080');
   const [showOnlyRunning, setShowOnlyRunning] = useState(true);
+  
+  // Theme State
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('norex-theme');
+    return (saved as 'dark' | 'light') || 'dark';
+  });
+
+  // Apply theme to document root
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('norex-theme', theme);
+  }, [theme]);
+
+  // Toggle theme function
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   // Check services status on mount
   useEffect(() => {
@@ -148,17 +165,17 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen overflow-hidden" style={{ backgroundColor: '#0F1117', borderRadius: '12px' }}>
+    <div className="w-full h-screen overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '12px' }}>
       {/* Main Window Container - Premium Dark */}
-      <div className="w-full h-full flex flex-col text-gray-100 overflow-hidden" style={{ backgroundColor: '#161920', borderRadius: '12px' }}>
+      <div className="w-full h-full flex flex-col text-gray-100 overflow-hidden" style={{ backgroundColor: 'var(--bg-primary)', borderRadius: '12px' }}>
         
         {/* Custom Title Bar with Logo and Settings */}
         <div 
           className="flex items-center justify-between px-4 py-3 select-none border-b"
           style={{ 
             WebkitAppRegion: 'drag',
-            backgroundColor: '#0F1117',
-            borderBottomColor: 'rgba(255,255,255,0.05)',
+            backgroundColor: 'var(--bg-secondary)',
+            borderBottomColor: 'var(--border-color)',
             borderRadius: '12px 12px 0 0'
           } as any}
         >
@@ -168,17 +185,30 @@ const App: React.FC = () => {
             }}>
               <Zap className="h-5 w-5 text-white" />
             </div>
-            <h1 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>
+            <h1 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
               Norex v3.6
             </h1>
           </div>
           
           <div className="flex items-center space-x-1 pointer-events-auto" style={{ WebkitAppRegion: 'no-drag' } as any}>
+            {/* Theme Toggle Button */}
             <button 
-              onClick={() => window.electron.openSettingsWindow()}
+              onClick={toggleTheme}
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
-              style={{ color: '#A8AEBF' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1B1F28'}
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            </button>
+            
+            {/* Settings Button - Pass theme to settings window */}
+            <button 
+              onClick={() => window.electron.openSettingsWindow(theme)}
+              className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               title="Settings"
             >
@@ -188,8 +218,8 @@ const App: React.FC = () => {
               onClick={handleMinimize} 
               title="Minimize" 
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
-              style={{ color: '#A8AEBF' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1B1F28'}
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             >
               <Minimize className="w-4 h-4" />
@@ -198,14 +228,14 @@ const App: React.FC = () => {
               onClick={handleClose} 
               title="Close" 
               className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-150"
-              style={{ color: '#A8AEBF' }}
+              style={{ color: 'var(--text-secondary)' }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#D95757';
+                e.currentTarget.style.backgroundColor = 'var(--accent-red)';
                 e.currentTarget.style.color = '#FFFFFF';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#A8AEBF';
+                e.currentTarget.style.color = 'var(--text-secondary)';
               }}
             >
               <X className="w-4 h-4" />
@@ -214,15 +244,15 @@ const App: React.FC = () => {
         </div>
 
         {/* Services Overview Section - FIXED HEADER, SCROLLABLE LIST */}
-        <div className="px-4 py-3 border-b flex flex-col flex-1 overflow-hidden" style={{ borderBottomColor: 'rgba(255,255,255,0.05)' }}>
+        <div className="px-4 py-3 border-b flex flex-col flex-1 overflow-hidden" style={{ borderBottomColor: 'var(--border-color)' }}>
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
-            <h2 className="text-sm font-semibold" style={{ color: '#E9ECF2' }}>Services Overview</h2>
+            <h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Services Overview</h2>
             <button 
               onClick={() => setShowOnlyRunning(!showOnlyRunning)}
               className="text-xs px-2 py-1 rounded transition-all"
               style={{ 
-                backgroundColor: showOnlyRunning ? '#6A5AEC' : '#1B1F28',
-                color: showOnlyRunning ? '#FFFFFF' : '#A8AEBF'
+                backgroundColor: showOnlyRunning ? 'var(--accent-purple)' : 'var(--bg-hover)',
+                color: showOnlyRunning ? '#FFFFFF' : 'var(--text-secondary)'
               }}
             >
               {showOnlyRunning ? 'Running Only' : 'Show All'}
@@ -235,22 +265,22 @@ const App: React.FC = () => {
                 key={index}
                 className="flex items-center justify-between px-3 py-2 transition-all duration-150 border"
                 style={{
-                  backgroundColor: '#0F1117',
-                  borderColor: 'rgba(255,255,255,0.05)',
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
                   opacity: service.status === 'stopped' ? 0.55 : 1,
                   borderRadius: '12px'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1B1F28'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0F1117'}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
               >
                 <div className="flex items-center space-x-3 flex-1">
                   <span className="text-lg w-6 text-center">{service.icon}</span>
                   <div className="flex-1">
-                    <span className="text-sm font-medium" style={{ color: '#E9ECF2' }}>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
                       {service.name} {service.version}
                     </span>
                   </div>
-                  <div className="text-xs" style={{ color: '#A8AEBF' }}>
+                  <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                     Port: {service.port}
                   </div>
                 </div>
@@ -260,9 +290,9 @@ const App: React.FC = () => {
                     <button 
                       onClick={() => handleServiceAction(service.name, 'cli')}
                       className="px-3 py-1 text-xs transition-all duration-150"
-                      style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF', borderRadius: '8px' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5A4ADC'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6A5AEC'}
+                      style={{ backgroundColor: 'var(--accent-purple)', color: '#FFFFFF', borderRadius: '8px' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-purple-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-purple)'}
                     >
                       Open CLI
                     </button>
@@ -271,9 +301,9 @@ const App: React.FC = () => {
                     <button 
                       onClick={() => handleServiceAction(service.name, 'reload')}
                       className="px-3 py-1 text-xs transition-all duration-150"
-                      style={{ backgroundColor: '#4BA3E6', color: '#FFFFFF', borderRadius: '8px' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A93D6'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4BA3E6'}
+                      style={{ backgroundColor: 'var(--accent-blue)', color: '#FFFFFF', borderRadius: '8px' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-blue-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-blue)'}
                     >
                       Reload
                     </button>
@@ -285,20 +315,20 @@ const App: React.FC = () => {
         </div>
 
         {/* Current Project Section */}
-        <div className="px-4 py-3 border-b flex-shrink-0" style={{ borderBottomColor: 'rgba(255,255,255,0.05)' }}>
-          <h2 className="text-sm font-semibold mb-3" style={{ color: '#E9ECF2' }}>Current Project</h2>
+        <div className="px-4 py-3 border-b flex-shrink-0" style={{ borderBottomColor: 'var(--border-color)' }}>
+          <h2 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Current Project</h2>
           <div className="px-3 py-2 space-y-1 border" style={{ 
-            backgroundColor: '#0F1117',
-            borderColor: 'rgba(255,255,255,0.05)',
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: 'var(--border-color)',
             borderRadius: '12px'
           }}>
             <div className="flex items-center text-xs">
-              <span style={{ color: '#A8AEBF' }} className="w-28">Project Root:</span>
-              <span style={{ color: '#E9ECF2' }} className="font-mono">{projectRoot}</span>
+              <span style={{ color: 'var(--text-secondary)' }} className="w-28">Project Root:</span>
+              <span style={{ color: 'var(--text-primary)' }} className="font-mono">{projectRoot}</span>
             </div>
             <div className="flex items-center text-xs">
-              <span style={{ color: '#A8AEBF' }} className="w-28">Domain:</span>
-              <span style={{ color: '#E9ECF2' }} className="font-mono">{projectDomain}</span>
+              <span style={{ color: 'var(--text-secondary)' }} className="w-28">Domain:</span>
+              <span style={{ color: 'var(--text-primary)' }} className="font-mono">{projectDomain}</span>
             </div>
           </div>
           
@@ -307,9 +337,9 @@ const App: React.FC = () => {
               <button 
                 onClick={handleStartServices}
                 className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
-                style={{ backgroundColor: '#3FBF75', color: '#FFFFFF', borderRadius: '10px' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2FAF65'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3FBF75'}
+                style={{ backgroundColor: 'var(--accent-green)', color: '#FFFFFF', borderRadius: '10px' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-green-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-green)'}
               >
                 <Power className="w-4 h-4" />
                 <span>Start Services</span>
@@ -331,9 +361,9 @@ const App: React.FC = () => {
               <button 
                 onClick={handleStopServices}
                 className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
-                style={{ backgroundColor: '#D95757', color: '#FFFFFF', borderRadius: '10px' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C94747'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D95757'}
+                style={{ backgroundColor: 'var(--accent-red)', color: '#FFFFFF', borderRadius: '10px' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-red-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-red)'}
               >
                 <Power className="w-4 h-4" />
                 <span>Stop Services</span>
@@ -356,14 +386,14 @@ const App: React.FC = () => {
               disabled={servicesStatus !== 'running'}
               className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
               style={{ 
-                backgroundColor: servicesStatus === 'running' ? '#4BA3E6' : '#4A5568', 
+                backgroundColor: servicesStatus === 'running' ? 'var(--accent-blue)' : '#4A5568', 
                 color: '#FFFFFF', 
                 borderRadius: '10px',
                 opacity: servicesStatus === 'running' ? 1 : 0.5,
                 cursor: servicesStatus === 'running' ? 'pointer' : 'not-allowed'
               }}
-              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#3A93D6')}
-              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#4BA3E6')}
+              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = 'var(--accent-blue-hover)')}
+              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = 'var(--accent-blue)')}
             >
               <Globe className="w-4 h-4" />
               <span>Open in Browser</span>
@@ -374,14 +404,14 @@ const App: React.FC = () => {
               disabled={servicesStatus !== 'running'}
               className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
               style={{ 
-                backgroundColor: servicesStatus === 'running' ? '#E89B4B' : '#4A5568', 
+                backgroundColor: servicesStatus === 'running' ? 'var(--accent-orange)' : '#4A5568', 
                 color: '#FFFFFF', 
                 borderRadius: '10px',
                 opacity: servicesStatus === 'running' ? 1 : 0.5,
                 cursor: servicesStatus === 'running' ? 'pointer' : 'not-allowed'
               }}
-              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#D88B3B')}
-              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = '#E89B4B')}
+              onMouseEnter={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = 'var(--accent-orange-hover)')}
+              onMouseLeave={(e) => servicesStatus === 'running' && (e.currentTarget.style.backgroundColor = 'var(--accent-orange)')}
             >
               <Database className="w-4 h-4" />
               <span>Database Panel</span>
@@ -390,9 +420,9 @@ const App: React.FC = () => {
             <button 
               onClick={handleOpenTerminal}
               className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 text-xs transition-all duration-150"
-              style={{ backgroundColor: '#6A5AEC', color: '#FFFFFF', borderRadius: '10px' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5A4ADC'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6A5AEC'}
+              style={{ backgroundColor: 'var(--accent-purple)', color: '#FFFFFF', borderRadius: '10px' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-purple-hover)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-purple)'}
             >
               <Terminal className="w-4 h-4" />
               <span>Open Terminal</span>
@@ -402,15 +432,15 @@ const App: React.FC = () => {
 
         {/* Footer Runtime Info */}
         <div className="px-4 py-2 border-t flex-shrink-0" style={{ 
-          backgroundColor: '#0F1117',
-          borderTopColor: 'rgba(255,255,255,0.05)'
+          backgroundColor: 'var(--bg-secondary)',
+          borderTopColor: 'var(--border-color)'
         }}>
-          <div className="flex items-center justify-between text-xs" style={{ color: '#A8AEBF' }}>
+          <div className="flex items-center justify-between text-xs" style={{ color: 'var(--text-secondary)' }}>
             <div className="flex items-center space-x-4">
-              <span>IP: <span style={{ color: '#E9ECF2' }} className="font-mono">{ipAddress}</span></span>
-              <span>Active Time: <span style={{ color: '#E9ECF2' }} className="font-mono">{activeTime}</span></span>
+              <span>IP: <span style={{ color: 'var(--text-primary)' }} className="font-mono">{ipAddress}</span></span>
+              <span>Active Time: <span style={{ color: 'var(--text-primary)' }} className="font-mono">{activeTime}</span></span>
             </div>
-            <span style={{ color: '#6B7280' }}>Footer Runtime Info</span>
+            <span style={{ color: 'var(--text-muted)' }}>Footer Runtime Info</span>
           </div>
         </div>
       </div>
