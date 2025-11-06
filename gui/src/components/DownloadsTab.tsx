@@ -22,7 +22,7 @@ const DownloadsTab: React.FC = () => {
   const [globalSettings, setGlobalSettings] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [testingUrl, setTestingUrl] = useState<string | null>(null);
-  const [projectRoot, setProjectRoot] = useState<string>('/app'); // Default fallback
+  const [projectRoot, setProjectRoot] = useState<string | null>(null); // FIXED: Start with null
   const [editModal, setEditModal] = useState<{ open: boolean; binary: Binary | null }>({
     open: false,
     binary: null,
@@ -39,9 +39,12 @@ const DownloadsTab: React.FC = () => {
     const initProjectRoot = async () => {
       try {
         const root = await window.electron.getProjectRoot();
+        console.log('✅ Project root loaded from electron:', root);
         setProjectRoot(root);
       } catch (err) {
-        console.error('Failed to get project root, using default /app:', err);
+        console.error('❌ Failed to get project root from electron:', err);
+        // Fallback to /app only if electron API fails
+        setProjectRoot('/app');
       }
     };
     initProjectRoot();
