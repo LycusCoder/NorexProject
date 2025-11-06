@@ -2,6 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme CSS Variables */
+:root[data-theme="dark"] {
+  --bg-primary: #161920;
+  --bg-secondary: #0F1117;
+  --bg-hover: #1B1F28;
+  --text-primary: #E9ECF2;
+  --text-secondary: #A8AEBF;
+  --text-muted: #6B7280;
+  --border-color: rgba(255,255,255,0.05);
+  --accent-purple: #6A5AEC;
+  --accent-purple-hover: #5A4ADC;
+  --accent-green: #3FBF75;
+  --accent-green-hover: #2FAF65;
+  --accent-red: #D95757;
+  --accent-red-hover: #C94747;
+  --accent-blue: #4BA3E6;
+  --accent-blue-hover: #3A93D6;
+  --accent-orange: #E89B4B;
+  --accent-orange-hover: #D88B3B;
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F7FA;
+  --bg-hover: #E9ECEF;
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  --border-color: rgba(0,0,0,0.08);
+  --accent-purple: #6A5AEC;
+  --accent-purple-hover: #5A4ADC;
+  --accent-green: #10B981;
+  --accent-green-hover: #059669;
+  --accent-red: #EF4444;
+  --accent-red-hover: #DC2626;
+  --accent-blue: #3B82F6;
+  --accent-blue-hover: #2563EB;
+  --accent-orange: #F59E0B;
+  --accent-orange-hover: #D97706;
+}
+
+/* Smooth theme transition */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
 /* Fade in animation for services */
 @keyframes fadeIn {
   from {
